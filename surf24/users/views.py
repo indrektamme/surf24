@@ -7,17 +7,15 @@ users = Blueprint('users', __name__)
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data)
-
         db.session.add(user)
         db.session.commit()
         flash('Thanks for registering! Now you can login!')
         return redirect(url_for('users.login'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, current_user=current_user)
 
 @users.route('/login', methods=['GET', 'POST'])
 def login():
@@ -47,7 +45,7 @@ def login():
                 next = url_for('core.index')
 
             return redirect(next)
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, current_user=current_user)
 
 
 
@@ -82,11 +80,12 @@ def account():
         form.email.data = current_user.email
 
     profile_image = url_for('static', filename='profile_pics/' + current_user.profile_image)
-    return render_template('account.html', profile_image=profile_image, form=form)
+    return render_template('account.html', profile_image=profile_image, form=form, current_user=current_user)
 
 
 @users.route("/<username>")
 def user_posts(username):
+    return "1"
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     blog_posts = BlogPost.query.filter_by(author=user).order_by(BlogPost.date.desc()).paginate(page=page, per_page=5)
