@@ -11,12 +11,22 @@
   </head>
   <body>
 
-<ul class="nav">
-  <li class="nav_item">aaa</li>
-  <li class="nav_item">bbb</li>
-  <li class="nav_item">ccc</li>
-</ul>
+    <ul class="nav">
 
+     <li class="nav-item">
+       <a class="nav-link" href="{{ url_for('core.index') }}">Home</a>
+     </li>
+
+       {% if current_user.is_authenticated %}
+       <li class="nav-link"><a href="{{ url_for('users.logout') }}">Log Out</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.account') }}">Account</a></li>
+       <li class="nav-link"><a href="{{ url_for('blog_posts.create_post') }}">Create Post</a></li>
+       {% else %}
+       <li class="nav-link"><a href="{{ url_for('users.login') }}">Log In</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.register') }}">Register</a></li>
+       {% endif %}
+
+   </ul>
 <div class="container">
     {% block content %}
 
