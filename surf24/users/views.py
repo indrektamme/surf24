@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm
+from surf24.models import User
 users = Blueprint('users', __name__)
 
 

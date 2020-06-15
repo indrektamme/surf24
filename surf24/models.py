@@ -1,4 +1,4 @@
-from surf24 import db
+from surf24 import db, login_manager
 from flask_login import UserMixin
 from enum import Enum
 from datetime import datetime
@@ -8,17 +8,17 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 class oauth(Enum):
-    NONE
-    GOOGLE
-    TWITTER
-    FACEBOOK
-    INSTAGRAM
+    NONE=0
+    GOOGLE=1
+    TWITTER=2
+    FACEBOOK=3
+    INSTAGRAM=4
 
 class condition(Enum):
-    NONE
-    OLD
-    USED
-    NEW
+    NONE=0
+    OLD=1
+    USED=2
+    NEW=3
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
 class Advert(db.Model):
     users = db.relationship(User)
     id = db.Column(db.Integer, primary_key=True, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(users.id), nullable=False)
+    # user_id = db.Column(db.Integer, db.ForeignKey(users.id), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     title = db.Column(db.String(50), nullable=False)
     text = db.Column(db.String(500), nullable=False)
@@ -46,7 +46,7 @@ class Advert(db.Model):
 class Image(db.Model):
     adverts = db.relationship(Advert)
     id = db.Column(db.Integer, primary_key=True, index=True)
-    advert_id = db.Column(db.Integer, db.ForeignKey(adverts.id), nullable=False)
+    # advert_id = db.Column(db.Integer, db.ForeignKey(adverts.id), nullable=False)
     image = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(20))
     order = db.Column(db.Integer)
