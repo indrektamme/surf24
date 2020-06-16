@@ -40,6 +40,9 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"UserName: {self.username}"
 
+    def check_password(self,password):
+        return check_password_hash(self.password_hash,password)
+
 class Advert(db.Model):
     __tablename__ = 'adverts'
     users = db.relationship(User)
