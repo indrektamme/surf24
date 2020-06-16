@@ -1,10 +1,12 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm
+from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm, kala
 from surf24.models import User
 from surf24 import db
-users = Blueprint('users', __name__)
+from surf24.users.picture_handler import add_prof_pic
+import os
 
+users = Blueprint('users', __name__)
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -68,7 +70,7 @@ def account():
         print(form)
         if form.picture.data:
             username = current_user.username
-            pic = add_profile_pic(form.picture.data,username)
+            pic = add_prof_pic(form.picture.data,username)
             current_user.profile_image = pic
 
         current_user.username = form.username.data
@@ -81,9 +83,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    profile_image = url_for('static', filename='profile_pics/' + current_user.profile_image)
+    profile_image = url_for('static', filename= os.path.join('profile_pics', current_user.profile_image))
     return render_template('account.html', profile_image=profile_image, form=form, current_user=current_user)
-
 
 @users.route("/<username>")
 def user_posts(username):
