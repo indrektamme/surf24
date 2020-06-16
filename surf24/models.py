@@ -2,6 +2,7 @@ from surf24 import db, login_manager
 from flask_login import UserMixin
 from enum import Enum
 from datetime import datetime
+from werkzeug.security import generate_password_hash,check_password_hash
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -31,6 +32,14 @@ class User(db.Model, UserMixin):
     profile_image = db.Column(db.String(20), nullable=False, default='default_profile_image.png')
     adverts = db.relationship('Advert', backref='author', lazy=True)
 
+    def __init__(self, email, username, password):
+        self.email = email
+        self.username = username
+        self.password_hash = generate_password_hash(password)
+
+    def __repr__(self):
+        return f"UserName: {self.username}"
+
 class Advert(db.Model):
     __tablename__ = 'adverts'
     users = db.relationship(User)
@@ -39,7 +48,7 @@ class Advert(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     title = db.Column(db.String(50), nullable=False)
     text = db.Column(db.String(500), nullable=False)
-    pric = db.Column(db.Integer)
+    price = db.Column(db.Integer)
     condition = db.Column(db.Enum(condition))
     location = db.Column(db.String(20))
     hide = db.Column(db.Boolean, default=False, nullable=False)
