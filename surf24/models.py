@@ -65,3 +65,11 @@ class Image(db.Model):
     image = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(20))
     order = db.Column(db.Integer)
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    name = db.Column(db.String(20))
+    parent = db.Column(db.Integer)
+    order = db.Column(db.Integer)
+    
