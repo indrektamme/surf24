@@ -16,9 +16,10 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 from surf24.core.views import core
 from surf24.users.views import users
+from surf24.ads.views import ads
 app.register_blueprint(core)
 app.register_blueprint(users)
-
+app.register_blueprint(ads)
 
 
 Migrate(app,db)
