@@ -51,7 +51,7 @@ class Advert(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     title = db.Column(db.String(50), nullable=False)
     text = db.Column(db.String(500), nullable=False)
-    price = db.Column(db.Integer)
+    price = db.Column(db.Numeric(10,2))
     condition = db.Column(db.Enum(condition))
     location = db.Column(db.String(20))
     hide = db.Column(db.Boolean, default=False, nullable=False)
@@ -72,4 +72,3 @@ class Category(db.Model):
     name = db.Column(db.String(20))
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
-    

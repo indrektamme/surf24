@@ -15,8 +15,8 @@ def create_ad():
     if form.validate_on_submit():
         advert = Advert(title=form.title.data,
                             text = form.text.data,
-                            user_id = current_user.id)
-
+                            user_id = current_user.id,
+                            price = form.price.data)
         db.session.add(advert)
         db.session.commit()
         flash('Kuulutus lisatud')
