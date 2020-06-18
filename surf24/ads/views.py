@@ -3,9 +3,9 @@ from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert
 from surf24.ads.forms import AdForm, PicForm
+from surf24.ads.picture_handler import add_ad_pic
 
 ads = Blueprint('ads', __name__)
-
 
 @ads.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -20,7 +20,10 @@ def create_ad():
                             price = form.price.data)
         db.session.add(advert)
         db.session.commit()
-        flash('Kuulutus lisatud')
+        db.session.flush()
+
+        if picForm.validate_on_submit():
+            add_ad_pic(picForm.picture.data, filename)
         return redirect(url_for('core.index'))
 
     return render_template('create_ad.html', form=form, picForm=picForm)
@@ -51,7 +54,7 @@ def update(ad_id):
         db.session.add(ad)
         #db.session.commit()
         db.session.flush()
-        print("uuendatud on " + id.id)
+        print("uuendatud on ")
         flash('Kuulutus on uuendatud')
         return redirect(url_for('ads.ad', ad_id = ad.id))
 

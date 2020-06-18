@@ -1,6 +1,7 @@
 import os, time
 from PIL import Image #pip install PIL
 from flask import url_for, current_app
+from surf24.models import Image
 
 def add_ad_pic(pic_upload, ad_id):
     filename = pic_upload.filename
