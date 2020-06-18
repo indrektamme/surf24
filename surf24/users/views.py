@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm, kala
+from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 from surf24.models import User
 from surf24 import db
 from surf24.users.picture_handler import add_prof_pic

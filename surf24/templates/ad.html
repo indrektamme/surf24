@@ -6,6 +6,7 @@
   <h2>Written by:{{ad.author.username}}</h2>
   <h3>Published: {{ad.date.strftime('%B %d, %Y')}}</h3>
   <p>{{ad.text}}</p>
+    <p>price: {{ad.price}}</p>
 
   {% if ad.author == current_user %}
     <div>

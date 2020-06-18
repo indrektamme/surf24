@@ -4,6 +4,7 @@
 <div class="container">
   <form class="form_group" method = "POST">
     {{form.hidden_tag()}}
+    {{picForm.hidden_tag()}}
 
     <div class="form_group" method = "POST">
       {{form.title.label(class="form-control-label")}}
@@ -18,6 +19,11 @@
     <div class="form_group" method = "POST">
       {{form.price.label(class="form-control-label")}}
       {{form.price(class = "form-control form-control-lg")}}
+    </div>
+
+    <div class="form_group" method = "POST">
+      {{picForm.picture.label(class="form-control-label")}}
+      {{picForm.picture(class = "form-control form-control-lg")}}
     </div>
 
     <div class="form_group" method = "POST">

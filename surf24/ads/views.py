@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert
-from surf24.ads.forms import AdForm
+from surf24.ads.forms import AdForm, PicForm
 
 ads = Blueprint('ads', __name__)
 
@@ -11,6 +11,7 @@ ads = Blueprint('ads', __name__)
 @login_required
 def create_ad():
     form = AdForm()
+    picForm = PicForm()
 
     if form.validate_on_submit():
         advert = Advert(title=form.title.data,
@@ -22,7 +23,7 @@ def create_ad():
         flash('Kuulutus lisatud')
         return redirect(url_for('core.index'))
 
-    return render_template('create_ad.html', form=form)
+    return render_template('create_ad.html', form=form, picForm=picForm)
 
 
 @ads.route('/<int:ad_id>')
@@ -41,21 +42,25 @@ def update(ad_id):
         abort(403)
 
     form = AdForm()
-
+    picForm = PicForm()
     if form.validate_on_submit():
         ad.title = form.title.data
         ad.text = form.text.data
+        ad.price = form.price.data
 
         db.session.add(ad)
-        db.session.commit()
+        #db.session.commit()
+        db.session.flush()
+        print("uuendatud on " + id.id)
         flash('Kuulutus on uuendatud')
         return redirect(url_for('ads.ad', ad_id = ad.id))
 
     elif request.method == 'GET':
         form.title.data = ad.title
         form.text.data = ad.text
+        form.price.data = ad.price
 
-    return render_template('create_ad.html', title='Updating', form=form)
+    return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm())
 @ads.route('/<int:ad_id>/delete', methods=['GET','POST'])
 @login_required
 def delete(ad_id):
