@@ -14,6 +14,7 @@ def create_ad():
     picForm = PicForm()
 
     if form.validate_on_submit():
+
         advert = Advert(title=form.title.data,
                             text = form.text.data,
                             user_id = current_user.id,
@@ -23,10 +24,32 @@ def create_ad():
         db.session.flush()
 
         if picForm.validate_on_submit():
-            filename = add_ad_pic(picForm.picture.data, advert.id)
-            picture = Picture(advert_id=advert.id, image=filename)
-            db.session.add(picture)
-            db.session.commit()
+            if picForm.picture1.data:
+                filename = add_ad_pic(picForm.picture1.data, advert.id)
+                picture = Picture(advert_id=advert.id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture2.data:
+                filename = add_ad_pic(picForm.picture2.data, advert.id)
+                picture = Picture(advert_id=advert.id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture3.data:
+                filename = add_ad_pic(picForm.picture3.data, advert.id)
+                picture = Picture(advert_id=advert.id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture4.data:
+                filename = add_ad_pic(picForm.picture4.data, advert.id)
+                picture = Picture(advert_id=advert.id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture5.data:
+                filename = add_ad_pic(picForm.picture5.data, advert.id)
+                picture = Picture(advert_id=advert.id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+
         return redirect(url_for('core.index'))
     return render_template('create_ad.html', form=form, picForm=picForm)
 
@@ -52,8 +75,6 @@ def update(ad_id):
         db.session.add(ad)
         #db.session.commit()
         db.session.flush()
-        print("uuendatud on ")
-        flash('Kuulutus on uuendatud')
         return redirect(url_for('ads.ad', ad_id = ad.id))
 
     elif request.method == 'GET':
@@ -66,10 +87,13 @@ def update(ad_id):
 @login_required
 def delete(ad_id):
     ad=Advert.query.get_or_404(ad_id)
+    pics=Picture.query.filter_by(advert_id=ad_id)
     if ad.author != current_user:
         abort(403)
 
     db.session.delete(ad)
+
     db.session.commit()
+
     flash('Kuulutus kustutatud!')
     return redirect(url_for('core.index'))
