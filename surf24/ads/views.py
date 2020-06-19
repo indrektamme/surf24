@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
-from surf24.models import Advert
+from surf24.models import Advert, Picture
 from surf24.ads.forms import AdForm, PicForm
 from surf24.ads.picture_handler import add_ad_pic
 
@@ -23,19 +23,20 @@ def create_ad():
         db.session.flush()
 
         if picForm.validate_on_submit():
-            add_ad_pic(picForm.picture.data, filename)
+            filename = add_ad_pic(picForm.picture.data, advert.id)
+            picture = Picture(advert_id=advert.id, image=filename)
+            db.session.add(picture)
+            db.session.commit()
         return redirect(url_for('core.index'))
-
     return render_template('create_ad.html', form=form, picForm=picForm)
-
 
 @ads.route('/<int:ad_id>')
 def advert(ad_id):
     ad = Advert.query.get_or_404(ad_id)
-    # return render_template('ad.html', title=ad.title, date = ad.date, post = ad.text)
-    return render_template('ad.html', ad=ad)
+    picture = Picture.query.filter_by(advert_id=ad_id)
+    #picture = Picture.query.get(1)
+    return render_template('ad.html', ad=ad, picture=picture)
 
-#update
 
 @ads.route("/<int:ad_id>/update", methods=['GET','POST'])
 @login_required
@@ -50,7 +51,6 @@ def update(ad_id):
         ad.title = form.title.data
         ad.text = form.text.data
         ad.price = form.price.data
-
         db.session.add(ad)
         #db.session.commit()
         db.session.flush()

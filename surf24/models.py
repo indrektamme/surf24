@@ -55,9 +55,9 @@ class Advert(db.Model):
     condition = db.Column(db.Enum(condition))
     location = db.Column(db.String(20))
     hide = db.Column(db.Boolean, default=False, nullable=False)
-    images = db.relationship('Image', backref='picture', lazy=True)
+    images = db.relationship('Picture', backref='picture', lazy=True)
 
-class Image(db.Model):
+class Picture(db.Model):
     __tablename__ = 'images'
     adverts = db.relationship(Advert)
     id = db.Column(db.Integer, primary_key=True, index=True)
