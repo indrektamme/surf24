@@ -33,9 +33,7 @@ def create_ad():
 @ads.route('/<int:ad_id>')
 def advert(ad_id):
     ad = Advert.query.get_or_404(ad_id)
-    picture = Picture.query.filter_by(advert_id=ad_id)
-    #picture = Picture.query.get(1)
-    return render_template('ad.html', ad=ad, picture=picture)
+    return render_template('ad.html', ad=ad)
 
 
 @ads.route("/<int:ad_id>/update", methods=['GET','POST'])
