@@ -82,7 +82,7 @@ def update(ad_id):
         form.text.data = ad.text
         form.price.data = ad.price
 
-    return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm())
+    return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm(), ad=ad)
 @ads.route('/<int:ad_id>/delete', methods=['GET','POST'])
 @login_required
 def delete(ad_id):
@@ -101,3 +101,17 @@ def delete(ad_id):
 
     flash('Kuulutus kustutatud!')
     return redirect(url_for('core.index'))
+
+
+@ads.route('/<int:pic_id>/delete_image', methods=['GET','POST'])
+@login_required
+def delete_image(pic_id):
+    pic=Picture.query.get_or_404(pic_id)
+    ad=Advert.query.get_or_404(pic.advert_id)
+    if ad.author != current_user:
+        abort(403)
+    #del_pic(pic.image)
+    db.session.delete(pic)
+    db.session.commit()
+
+    return redirect(url_for('ads.create'))

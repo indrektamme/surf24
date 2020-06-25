@@ -10,9 +10,7 @@
 
     {% for image in ad.images %}
     <div class="">
-      <h1>esimene</h1>
       <img  src="{{ url_for('static', filename='ad_pics/' + image.image) }}" />
-      <p>teine</p>
     </div>
     {% endfor %}
   </div>

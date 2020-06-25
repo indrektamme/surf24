@@ -26,6 +26,14 @@
       {{picForm.picture1(class = "form-control form-control-lg")}}
     </div>
 
+    {% for image in ad.images %}
+    <div class="">
+      <img  src="{{ url_for('static', filename='ad_pics/' + image.image) }}" />
+      <a href="{{url_for('ads.delete_image', pic_id=image.id)}}">Delete</a>
+    </div>
+    {% endfor %}
+
+
     <div class="form_group" method = "POST">
       {{picForm.picture2(class = "form-control form-control-lg")}}
     </div>
@@ -46,6 +54,9 @@
       {{form.submit(class="btn btn-outline-info")}}
 
     </div>
+
+
+
     </form>
   </div>
 
