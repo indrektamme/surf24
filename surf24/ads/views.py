@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert, Picture
 from surf24.ads.forms import AdForm, PicForm
-from surf24.ads.picture_handler import add_ad_pic
+from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
 
@@ -87,12 +87,16 @@ def update(ad_id):
 @login_required
 def delete(ad_id):
     ad=Advert.query.get_or_404(ad_id)
+
     pics=Picture.query.filter_by(advert_id=ad_id)
     if ad.author != current_user:
         abort(403)
+    for picfile in pics:
+        del_pic(picfile.image)
+        db.session.delete(picfile)
+        db.session.commit()
 
     db.session.delete(ad)
-
     db.session.commit()
 
     flash('Kuulutus kustutatud!')

@@ -8,8 +8,12 @@ def add_ad_pic(pic_upload, ad_id):
     secondsSinceEpoch = str(time.time())
     storage_filename = str(ad_id) + '_' + secondsSinceEpoch + '.' + ext_type
     filepath = os.path.join(current_app.root_path, 'static', 'ad_pics', storage_filename)
-    output_size = (200,200)
+    #output_size = (200,200)
     pic = Image.open(pic_upload)
-    pic.thumbnail(output_size)
+    #pic.thumbnail(output_size)
     pic.save(filepath)
     return storage_filename
+
+def del_pic(filename):
+    filepath = os.path.join(current_app.root_path, 'static', 'ad_pics', filename)
+    os.remove(filepath)

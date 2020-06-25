@@ -6,11 +6,19 @@
   <h2>Written by:{{ad.author.username}}</h2>
   <h3>Published: {{ad.date.strftime('%B %d, %Y')}}</h3>
   <p>{{ad.text}}</p>
+  <div class="jumbotron">
 
     {% for image in ad.images %}
-    <img align='center' src="{{ url_for('static', filename='ad_pics/' + image.image) }}">
+    <div class="">
+      <h1>esimene</h1>
+      <img  src="{{ url_for('static', filename='ad_pics/' + image.image) }}" />
+      <p>teine</p>
+    </div>
     {% endfor %}
+  </div>
 
+
+</div>
     <p>price: {{ad.price}}</p>
 
   {% if ad.author == current_user %}
