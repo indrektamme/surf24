@@ -26,12 +26,15 @@
       {{picForm.picture1(class = "form-control form-control-lg")}}
     </div>
 
+    {% if ad %}
     {% for image in ad.images %}
     <div class="">
       <img  src="{{ url_for('static', filename='ad_pics/' + image.image) }}" />
       <a href="{{url_for('ads.delete_image', pic_id=image.id)}}">Delete</a>
     </div>
     {% endfor %}
+    {% endif %}
+
 
 
     <div class="form_group" method = "POST">

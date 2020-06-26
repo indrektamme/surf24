@@ -73,14 +73,45 @@ def update(ad_id):
         ad.text = form.text.data
         ad.price = form.price.data
         db.session.add(ad)
-        #db.session.commit()
+        db.session.commit()
         db.session.flush()
-        return redirect(url_for('ads.ad', ad_id = ad.id))
+
+
+        if picForm.validate_on_submit():
+            if picForm.picture1.data:
+                filename = add_ad_pic(picForm.picture1.data, ad_id)
+                picture = Picture(advert_id=ad_id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture2.data:
+                filename = add_ad_pic(picForm.picture2.data, ad_id)
+                picture = Picture(advert_id=ad_id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture3.data:
+                filename = add_ad_pic(picForm.picture3.data, ad_id)
+                picture = Picture(advert_id=ad_id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture4.data:
+                filename = add_ad_pic(picForm.picture4.data, ad_id)
+                picture = Picture(advert_id=ad_id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+            if picForm.picture5.data:
+                filename = add_ad_pic(picForm.picture5.data, ad_id)
+                picture = Picture(advert_id=ad_id, image=filename)
+                db.session.add(picture)
+                db.session.commit()
+
+        return redirect(url_for('ads.advert', ad_id = ad_id))
 
     elif request.method == 'GET':
         form.title.data = ad.title
         form.text.data = ad.text
         form.price.data = ad.price
+
+
 
     return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm(), ad=ad)
 @ads.route('/<int:ad_id>/delete', methods=['GET','POST'])
@@ -106,12 +137,16 @@ def delete(ad_id):
 @ads.route('/<int:pic_id>/delete_image', methods=['GET','POST'])
 @login_required
 def delete_image(pic_id):
+
     pic=Picture.query.get_or_404(pic_id)
+
     ad=Advert.query.get_or_404(pic.advert_id)
+
+
     if ad.author != current_user:
         abort(403)
-    #del_pic(pic.image)
+    del_pic(pic.image)
     db.session.delete(pic)
     db.session.commit()
-
-    return redirect(url_for('ads.create'))
+    return redirect(url_for('ads.advert', ad_id = ad.id))
+    #return render_template('create_ad.html', title='Updating', form=AdForm(), picForm=PicForm(), ad=ad.id)
