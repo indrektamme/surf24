@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
     profile_image = db.Column(db.String(20), nullable=False, default='default_profile_image.png')
     adverts = db.relationship('Advert', backref='author', lazy=True)
 
+
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
@@ -56,6 +57,7 @@ class Advert(db.Model):
     location = db.Column(db.String(20))
     hide = db.Column(db.Boolean, default=False, nullable=False)
     images = db.relationship('Picture', backref='picture', lazy=True)
+    categories = db.relationship('AdvertCategory', backref='category', lazy=True)
 
 class Picture(db.Model):
     __tablename__ = 'images'
@@ -72,3 +74,9 @@ class Category(db.Model):
     name = db.Column(db.String(20))
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
+
+class AdvertCategory():
+    __tablename__ = 'advert_category'
+    adverts = db.relationship(Advert)
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    advert_id = db.Column(db.Integer, db.ForeignKey('adverts.id'), nullable=False)

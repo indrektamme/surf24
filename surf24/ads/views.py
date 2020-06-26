@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert, Picture
-from surf24.ads.forms import AdForm, PicForm
+from surf24.ads.forms import AdForm, PicForm, Category
 from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
@@ -12,6 +12,7 @@ ads = Blueprint('ads', __name__)
 def create_ad():
     form = AdForm()
     picForm = PicForm()
+    categoryForm = Category()
 
     if form.validate_on_submit():
 
@@ -51,7 +52,7 @@ def create_ad():
                 db.session.commit()
 
         return redirect(url_for('core.index'))
-    return render_template('create_ad.html', form=form, picForm=picForm)
+    return render_template('create_ad.html', form=form, picForm=picForm, categoryForm = categoryForm)
 
 @ads.route('/<int:ad_id>')
 def advert(ad_id):
@@ -75,7 +76,6 @@ def update(ad_id):
         db.session.add(ad)
         db.session.commit()
         db.session.flush()
-
 
         if picForm.validate_on_submit():
             if picForm.picture1.data:
@@ -103,15 +103,11 @@ def update(ad_id):
                 picture = Picture(advert_id=ad_id, image=filename)
                 db.session.add(picture)
                 db.session.commit()
-
         return redirect(url_for('ads.advert', ad_id = ad_id))
-
     elif request.method == 'GET':
         form.title.data = ad.title
         form.text.data = ad.text
         form.price.data = ad.price
-
-
 
     return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm(), ad=ad)
 @ads.route('/<int:ad_id>/delete', methods=['GET','POST'])
@@ -133,16 +129,11 @@ def delete(ad_id):
     flash('Kuulutus kustutatud!')
     return redirect(url_for('core.index'))
 
-
 @ads.route('/<int:pic_id>/delete_image', methods=['GET','POST'])
 @login_required
 def delete_image(pic_id):
-
     pic=Picture.query.get_or_404(pic_id)
-
     ad=Advert.query.get_or_404(pic.advert_id)
-
-
     if ad.author != current_user:
         abort(403)
     del_pic(pic.image)

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, TextAreaField, FloatField
+from wtforms import SubmitField, StringField, TextAreaField, FloatField, SelectField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from flask_wtf.file import FileField, FileAllowed
 
@@ -16,3 +16,7 @@ class PicForm(FlaskForm):
     picture4 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     picture5 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
+
+class Category(FlaskForm):
+    choices = ["one", "two"]
+    category = SelectField('valikud', choices = choices )

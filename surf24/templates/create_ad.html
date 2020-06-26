@@ -5,6 +5,12 @@
   <form class="form_group" method = "POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
     {{picForm.hidden_tag()}}
+    {{categoryForm.hidden_tag()}}
+
+    <div class="form_group">
+    
+      {{categoryForm.category(class = "form-control form-control-lg")}}
+    </div>
 
     <div class="form_group" method = "POST">
       {{form.title.label(class="form-control-label")}}
