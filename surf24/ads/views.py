@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
-from surf24.models import Advert, Picture
-from surf24.ads.forms import AdForm, PicForm, Category
+from surf24.models import Advert, Picture, Category
+from surf24.ads.forms import AdForm, PicForm, CategoryForm
 from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
@@ -12,7 +12,16 @@ ads = Blueprint('ads', __name__)
 def create_ad():
     form = AdForm()
     picForm = PicForm()
-    categoryForm = Category()
+    choices = ["one", "two", "three"]
+    #hoices = Category.query.filter_by(parent=1)
+    choices1 = Category.query.filter_by(parent=1)
+
+    for element in choices1:
+            choices.append(element.name)
+    #print(choices)
+    categoryForm = CategoryForm()
+    #with_entities(SomeModel.col1, SomeModel.col2)
+    categoryForm.category.choices = choices
 
     if form.validate_on_submit():
 

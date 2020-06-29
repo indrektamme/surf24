@@ -17,6 +17,15 @@ class PicForm(FlaskForm):
     picture5 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
 
-class Category(FlaskForm):
-    choices = ["one", "two"]
+class CategoryForm(FlaskForm):
+    choices = []
     category = SelectField('valikud', choices = choices )
+    #def getForm():
+    #    return Category1(choices)
+
+# class Category1(FlaskForm):
+#     choices=["one", "two"]
+#     def __init__(self,cffhoices):
+#         ok=1
+#         self.choices=["one", "two"]
+#     category = SelectField('valikud', choices = choices )

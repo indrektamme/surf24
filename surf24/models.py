@@ -75,7 +75,7 @@ class Category(db.Model):
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
 
-class AdvertCategory():
+class AdvertCategory(db.Model):
     __tablename__ = 'advert_category'
     adverts = db.relationship(Advert)
     id = db.Column(db.Integer, primary_key=True, index=True)
