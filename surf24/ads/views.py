@@ -7,24 +7,24 @@ from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
 
+def makeCategoryForm():
+    form = CategoryForm()
+    choices = [(0, 'Vali kategooria')]
+    choices1 = Category.query.filter_by(parent=0).all()
+    for element in choices1:
+        sequence = (element.id, element.name)
+        choices.append(sequence)
+    form.category.choices = choices
+    return form
+#coerce=int
 @ads.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_ad():
     form = AdForm()
     picForm = PicForm()
-    choices = ["one", "two", "three"]
-    #hoices = Category.query.filter_by(parent=1)
-    choices1 = Category.query.filter_by(parent=1)
-
-    for element in choices1:
-            choices.append(element.name)
-    #print(choices)
-    categoryForm = CategoryForm()
-    #with_entities(SomeModel.col1, SomeModel.col2)
-    categoryForm.category.choices = choices
-
+    categoryForm = makeCategoryForm()
     if form.validate_on_submit():
-
+        print("LEVEL 1")
         advert = Advert(title=form.title.data,
                             text = form.text.data,
                             user_id = current_user.id,
@@ -33,7 +33,17 @@ def create_ad():
         db.session.commit()
         db.session.flush()
 
+        if categoryForm.validate_on_submit():
+            print("LEVEL 2")
+            advertcategory = AdvertCategory(advert_id=advert.id, category_id = categoryForm.category.data)
+            db.session.add(advertcategory)
+            db.session.commit()
+        else:
+            print(categoryForm.errors)
+            print(categoryForm.category.data)
+
         if picForm.validate_on_submit():
+            print("LEVEL 3")
             if picForm.picture1.data:
                 filename = add_ad_pic(picForm.picture1.data, advert.id)
                 picture = Picture(advert_id=advert.id, image=filename)
@@ -59,7 +69,6 @@ def create_ad():
                 picture = Picture(advert_id=advert.id, image=filename)
                 db.session.add(picture)
                 db.session.commit()
-
         return redirect(url_for('core.index'))
     return render_template('create_ad.html', form=form, picForm=picForm, categoryForm = categoryForm)
 
@@ -68,16 +77,16 @@ def advert(ad_id):
     ad = Advert.query.get_or_404(ad_id)
     return render_template('ad.html', ad=ad)
 
-
 @ads.route("/<int:ad_id>/update", methods=['GET','POST'])
 @login_required
 def update(ad_id):
     ad = Advert.query.get_or_404(ad_id)
     if ad.author != current_user:
         abort(403)
-
     form = AdForm()
     picForm = PicForm()
+    categoryForm = makeCategoryForm()
+    categoryForm.category.data = "2"
     if form.validate_on_submit():
         ad.title = form.title.data
         ad.text = form.text.data
@@ -117,8 +126,9 @@ def update(ad_id):
         form.title.data = ad.title
         form.text.data = ad.text
         form.price.data = ad.price
+    return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm(), ad=ad, categoryForm=categoryForm)
 
-    return render_template('create_ad.html', title='Updating', form=form, picForm=PicForm(), ad=ad)
+
 @ads.route('/<int:ad_id>/delete', methods=['GET','POST'])
 @login_required
 def delete(ad_id):

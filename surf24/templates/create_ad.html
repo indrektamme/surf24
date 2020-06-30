@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if categoryForm.category.errors %}
+   {% for error in categoryForm.category.errors %}
+     {{ error }}
+   {% endfor %}
+{% endif %}
+
 <div class="container">
   <form class="form_group" method = "POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
@@ -8,7 +14,7 @@
     {{categoryForm.hidden_tag()}}
 
     <div class="form_group">
-    
+
       {{categoryForm.category(class = "form-control form-control-lg")}}
     </div>
 

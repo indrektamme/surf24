@@ -57,7 +57,7 @@ class Advert(db.Model):
     location = db.Column(db.String(20))
     hide = db.Column(db.Boolean, default=False, nullable=False)
     images = db.relationship('Picture', backref='picture', lazy=True)
-    categories = db.relationship('AdvertCategory', backref='category', lazy=True)
+    categories = db.relationship('AdvertCategory', backref='advert_category', lazy=True)
 
 class Picture(db.Model):
     __tablename__ = 'images'
@@ -74,9 +74,12 @@ class Category(db.Model):
     name = db.Column(db.String(20))
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
+    categories = db.relationship('AdvertCategory', backref='category', lazy=True)
 
 class AdvertCategory(db.Model):
     __tablename__ = 'advert_category'
     adverts = db.relationship(Advert)
+    categories = db.relationship(Category)
     id = db.Column(db.Integer, primary_key=True, index=True)
     advert_id = db.Column(db.Integer, db.ForeignKey('adverts.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
