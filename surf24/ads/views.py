@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
-from surf24.models import Advert, Picture, Category
+from surf24.models import Advert, Picture, Category, AdvertCategory
 from surf24.ads.forms import AdForm, PicForm, CategoryForm
 from surf24.ads.picture_handler import add_ad_pic, del_pic
 
@@ -16,7 +16,7 @@ def makeCategoryForm():
         choices.append(sequence)
     form.category.choices = choices
     return form
-#coerce=int
+
 @ads.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_ad():
@@ -24,7 +24,6 @@ def create_ad():
     picForm = PicForm()
     categoryForm = makeCategoryForm()
     if form.validate_on_submit():
-        print("LEVEL 1")
         advert = Advert(title=form.title.data,
                             text = form.text.data,
                             user_id = current_user.id,
@@ -34,8 +33,7 @@ def create_ad():
         db.session.flush()
 
         if categoryForm.validate_on_submit():
-            print("LEVEL 2")
-            advertcategory = AdvertCategory(advert_id=advert.id, category_id = categoryForm.category.data)
+            advertcategory = AdvertCategory(category_id=categoryForm.category.data, advert_id=advert.id)
             db.session.add(advertcategory)
             db.session.commit()
         else:
@@ -43,7 +41,6 @@ def create_ad():
             print(categoryForm.category.data)
 
         if picForm.validate_on_submit():
-            print("LEVEL 3")
             if picForm.picture1.data:
                 filename = add_ad_pic(picForm.picture1.data, advert.id)
                 picture = Picture(advert_id=advert.id, image=filename)
@@ -86,7 +83,7 @@ def update(ad_id):
     form = AdForm()
     picForm = PicForm()
     categoryForm = makeCategoryForm()
-    categoryForm.category.data = "2"
+    categoryForm.category.data = 2
     if form.validate_on_submit():
         ad.title = form.title.data
         ad.text = form.text.data

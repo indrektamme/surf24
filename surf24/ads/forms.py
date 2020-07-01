@@ -19,4 +19,8 @@ class PicForm(FlaskForm):
 
 class CategoryForm(FlaskForm):
     choices = []
-    category = SelectField('valikud', choices = choices, validators=[NoneOf("0")])
+    category = SelectField('valikud', coerce=int, choices = choices, validators=[NumberRange(min=1)])
+    def SecondForm(choices):
+        form = CategoryForm()
+        form.choices = choices
+        return form
