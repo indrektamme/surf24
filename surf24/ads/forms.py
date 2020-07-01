@@ -17,10 +17,14 @@ class PicForm(FlaskForm):
     picture5 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
 
-class CategoryForm(FlaskForm):
+class CategoryForm1(FlaskForm):
     choices = []
     category = SelectField('valikud', coerce=int, choices = choices, validators=[NumberRange(min=1)])
-    def SecondForm(choices):
-        form = CategoryForm()
-        form.choices = choices
-        return form
+
+class CategoryForm2(FlaskForm):
+    choices = []
+    category = SelectField('valikud', coerce=int, choices = choices, validators=[NumberRange(min=1)])
+
+class CategoryForm3(FlaskForm):
+    choices = []
+    category = SelectField('valikud', coerce=int, choices = choices, validators=[NumberRange(min=1)])

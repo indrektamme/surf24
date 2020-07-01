@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% if categoryForm.category.errors %}
-   {% for error in categoryForm.category.errors %}
-     {{ error }}
-   {% endfor %}
-{% endif %}
+
 
 <div class="container">
   <form class="form_group" method = "POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
     {{picForm.hidden_tag()}}
-    {{categoryForm.hidden_tag()}}
+    {{categoryForm1.hidden_tag()}}
+    {{categoryForm2.hidden_tag()}}
+    {{categoryForm3.hidden_tag()}}
 
-    <div class="form_group">
-
-      {{categoryForm.category(class = "form-control form-control-lg")}}
+    <div class="form_group" >
+      {{categoryForm1.category(class = "form-control form-control-lg")}}
     </div>
 
-    <div class="form_group" method = "POST">
+    <div class="form_group d-none" >
+      {{categoryForm2.category(class = "form-control form-control-lg", onchange="this.form.submit()")}}
+    </div>
+
+    <div class="form_group" >
+      {{categoryForm3.category(class = "form-control form-control-lg", onchange="this.form.submit()")}}
+    </div>
+
+
+    <div class="form_group" method = "POST" >
       {{form.title.label(class="form-control-label")}}
-      {{form.title(class = "form-control form-control-lg")}}
+      {{form.title(class = "form-control form-control-lg",onchange="submit()" )}}
     </div>
 
     <div class="form_group" method = "POST">
@@ -50,7 +56,7 @@
 
 
     <div class="form_group" method = "POST">
-      {{picForm.picture2(class = "form-control form-control-lg")}}
+      {{picForm.picture2(class = "form-control form-control-lg", onchange="this.form.submit()")}}
     </div>
 
     <div class="form_group" method = "POST">

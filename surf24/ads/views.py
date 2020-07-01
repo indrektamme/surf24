@@ -2,15 +2,20 @@ from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert, Picture, Category, AdvertCategory
-from surf24.ads.forms import AdForm, PicForm, CategoryForm
+from surf24.ads.forms import AdForm, PicForm, CategoryForm1, CategoryForm2, CategoryForm3
 from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
 
-def makeCategoryForm():
-    form = CategoryForm()
+def makeCategoryForm(level, parent):
+    if level == 2:
+        form = CategoryForm2()
+    if level == 3:
+        form = CategoryForm3()
+    else:
+        form = CategoryForm1()
     choices = [(0, 'Vali kategooria')]
-    choices1 = Category.query.filter_by(parent=0).all()
+    choices1 = Category.query.filter_by(parent=parent).all()
     for element in choices1:
         sequence = (element.id, element.name)
         choices.append(sequence)
@@ -22,7 +27,10 @@ def makeCategoryForm():
 def create_ad():
     form = AdForm()
     picForm = PicForm()
-    categoryForm = makeCategoryForm()
+    categoryForm1 = makeCategoryForm(1, 0)
+    categoryForm2 = makeCategoryForm(2, 0)
+    categoryForm3 = makeCategoryForm(3, 0)
+
     if form.validate_on_submit():
         advert = Advert(title=form.title.data,
                             text = form.text.data,
@@ -67,7 +75,7 @@ def create_ad():
                 db.session.add(picture)
                 db.session.commit()
         return redirect(url_for('core.index'))
-    return render_template('create_ad.html', form=form, picForm=picForm, categoryForm = categoryForm)
+    return render_template('create_ad.html', form=form, picForm=picForm, categoryForm1 = categoryForm1, categoryForm2 = categoryForm2, categoryForm3 = categoryForm3)
 
 @ads.route('/<int:ad_id>')
 def advert(ad_id):
