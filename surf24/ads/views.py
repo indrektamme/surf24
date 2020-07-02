@@ -28,10 +28,31 @@ def create_ad():
     form = AdForm()
     picForm = PicForm()
     categoryForm1 = makeCategoryForm(1, 0)
-    categoryForm2 = makeCategoryForm(2, 0)
-    categoryForm3 = makeCategoryForm(3, 0)
+    categoryForm3 = None
+
+
+    if categoryForm1.validate_on_submit():
+        if 'categoryForm2' not in locals():
+            categoryForm2 = makeCategoryForm(2, categoryForm1.category.data)
+    else:
+        categoryForm2 =  None
+
+    if 'categoryForm2' in locals():
+        if categoryForm2 != None:
+            print("siin")
+            if categoryForm2.validate_on_submit():
+                #print("siin1")
+                categoryForm3 = makeCategoryForm(3, categoryForm2.category.data)
+                categoryForm2.category.data
+                #print(f"siin {categoryForm2.category.data}")
+            else:
+                print(categoryForm2.errors)
+                print(categoryForm2.category.data)
+
 
     if form.validate_on_submit():
+        print("vajutatud")
+        print(form.submitbutton.data)
         advert = Advert(title=form.title.data,
                             text = form.text.data,
                             user_id = current_user.id,
@@ -40,13 +61,13 @@ def create_ad():
         db.session.commit()
         db.session.flush()
 
-        if categoryForm.validate_on_submit():
-            advertcategory = AdvertCategory(category_id=categoryForm.category.data, advert_id=advert.id)
+        if categoryForm1.validate_on_submit():
+            advertcategory = AdvertCategory(category_id=categoryForm1.category.data, advert_id=advert.id)
             db.session.add(advertcategory)
             db.session.commit()
         else:
-            print(categoryForm.errors)
-            print(categoryForm.category.data)
+            print(categoryForm1.errors)
+            print(categoryForm1.category.data)
 
         if picForm.validate_on_submit():
             if picForm.picture1.data:

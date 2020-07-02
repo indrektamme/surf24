@@ -7,7 +7,7 @@
         <div class="card-body">
           <h2><a class = 'card-title' href="{{url_for('ads.advert', ad_id=ad.id )}}">{{ad.title}}</a></h2>
           <p>Published on: {{ad.date.strftime('%Y-%m-%d')}}</p>
-          <a class='btn btn-primary' href="{{url_for('ads.advert', ad_id=ad.id )}}">Ava kuulutus</a>
+          <a class='btn btn-primary' href="{{url_for('ads.advert', ad_id=ad.id )}}">Question</a>
         </div>
       </div>
     {% endfor %}

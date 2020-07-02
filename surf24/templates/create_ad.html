@@ -8,20 +8,20 @@
     {{form.hidden_tag()}}
     {{picForm.hidden_tag()}}
     {{categoryForm1.hidden_tag()}}
-    {{categoryForm2.hidden_tag()}}
-    {{categoryForm3.hidden_tag()}}
 
     <div class="form_group" >
-      {{categoryForm1.category(class = "form-control form-control-lg")}}
+      {{categoryForm1.category(class = "form-control form-control-lg", onchange="submit()")}}
     </div>
-
-    <div class="form_group d-none" >
-      {{categoryForm2.category(class = "form-control form-control-lg", onchange="this.form.submit()")}}
-    </div>
-
-    <div class="form_group" >
-      {{categoryForm3.category(class = "form-control form-control-lg", onchange="this.form.submit()")}}
-    </div>
+{% if categoryForm2 %}
+  <div class="form_group" >
+    {{categoryForm2.category(class = "form-control form-control-lg", onchange="submit()")}}
+  </div>
+{% endif %}
+{% if categoryForm3 %}
+  <div class="form_group" >
+    {{categoryForm3.category(class = "form-control form-control-lg")}}
+  </div>
+{% endif %}
 
 
     <div class="form_group" method = "POST" >
@@ -72,7 +72,7 @@
     </div>
 
     <div class="form_group" method = "POST">
-      {{form.submit(class="btn btn-outline-info")}}
+      {{form.submitbutton(class="btn btn-outline-info")}}
 
     </div>
 

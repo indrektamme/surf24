@@ -7,7 +7,7 @@ class AdForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = TextAreaField('Text', validators=[DataRequired()])
     price = FloatField('Price', validators=[Optional(), NumberRange()])
-    submit = SubmitField('Post')
+    submitbutton = SubmitField('Post')
 
 class PicForm(FlaskForm):
     picture1 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
@@ -15,7 +15,6 @@ class PicForm(FlaskForm):
     picture3 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     picture4 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
     picture5 = FileField('Add picture', validators=[FileAllowed(['jpg', 'png'])])
-    submit = SubmitField('Post')
 
 class CategoryForm1(FlaskForm):
     choices = []
