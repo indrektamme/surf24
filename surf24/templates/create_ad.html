@@ -7,21 +7,14 @@
   <form class="form_group" method = "POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
     {{picForm.hidden_tag()}}
-    {{categoryForm1.hidden_tag()}}
+
 
     <div class="form_group" >
-      {{categoryForm1.category(class = "form-control form-control-lg", onchange="submit()")}}
+      {{categoryForm.category1(class = "form-control form-control-lg", onchange="submit()")}}
+      {{categoryForm.category2(class = "form-control form-control-lg", onchange="submit()")}}
+
     </div>
-{% if categoryForm2 %}
-  <div class="form_group" >
-    {{categoryForm2.category(class = "form-control form-control-lg", onchange="submit()")}}
-  </div>
-{% endif %}
-{% if categoryForm3 %}
-  <div class="form_group" >
-    {{categoryForm3.category(class = "form-control form-control-lg")}}
-  </div>
-{% endif %}
+
 
 
     <div class="form_group" method = "POST" >

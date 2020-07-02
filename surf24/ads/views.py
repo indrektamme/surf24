@@ -2,24 +2,29 @@ from flask import render_template, url_for, flash, request, redirect, Blueprint
 from flask_login import current_user, login_required
 from surf24 import db
 from surf24.models import Advert, Picture, Category, AdvertCategory
-from surf24.ads.forms import AdForm, PicForm, CategoryForm1, CategoryForm2, CategoryForm3
+from surf24.ads.forms import AdForm, PicForm, CategoryForm
 from surf24.ads.picture_handler import add_ad_pic, del_pic
 
 ads = Blueprint('ads', __name__)
 
-def makeCategoryForm(level, parent):
-    if level == 2:
-        form = CategoryForm2()
-    if level == 3:
-        form = CategoryForm3()
-    else:
-        form = CategoryForm1()
+def makeCategoryForm(choice1, choice2, choice3):
+    form = CategoryForm()
+
     choices = [(0, 'Vali kategooria')]
-    choices1 = Category.query.filter_by(parent=parent).all()
+    choices1 = Category.query.filter_by(parent=0).all()
     for element in choices1:
         sequence = (element.id, element.name)
         choices.append(sequence)
-    form.category.choices = choices
+    form.category1.choices = choices
+
+    choices2 = [(0, 'Vali kategooria')]
+    choices3 = Category.query.filter_by(parent=choice1).all()
+    print(f"choice1 on {choice1} ja choice2 on {choice2}")
+    for element in choices3:
+        sequence = (element.id, element.name)
+        choices2.append(sequence)
+    form.category2.choices = choices2
+    #form.category2.data = choice2
     return form
 
 @ads.route('/create', methods=['GET', 'POST'])
@@ -27,27 +32,10 @@ def makeCategoryForm(level, parent):
 def create_ad():
     form = AdForm()
     picForm = PicForm()
-    categoryForm1 = makeCategoryForm(1, 0)
-    categoryForm3 = None
+    categoryForm = makeCategoryForm(0, 0, 0)
 
-
-    if categoryForm1.validate_on_submit():
-        if 'categoryForm2' not in locals():
-            categoryForm2 = makeCategoryForm(2, categoryForm1.category.data)
-    else:
-        categoryForm2 =  None
-
-    if 'categoryForm2' in locals():
-        if categoryForm2 != None:
-            print("siin")
-            if categoryForm2.validate_on_submit():
-                #print("siin1")
-                categoryForm3 = makeCategoryForm(3, categoryForm2.category.data)
-                categoryForm2.category.data
-                #print(f"siin {categoryForm2.category.data}")
-            else:
-                print(categoryForm2.errors)
-                print(categoryForm2.category.data)
+    if categoryForm.validate_on_submit():
+        categoryForm = makeCategoryForm(categoryForm.category1.data , categoryForm.category2.data, 0)
 
 
     if form.validate_on_submit():
@@ -61,8 +49,8 @@ def create_ad():
         db.session.commit()
         db.session.flush()
 
-        if categoryForm1.validate_on_submit():
-            advertcategory = AdvertCategory(category_id=categoryForm1.category.data, advert_id=advert.id)
+        if categoryForm.validate_on_submit():
+            advertcategory = AdvertCategory(category_id=categoryForm.category1.data, advert_id=advert.id)
             db.session.add(advertcategory)
             db.session.commit()
         else:
@@ -96,7 +84,7 @@ def create_ad():
                 db.session.add(picture)
                 db.session.commit()
         return redirect(url_for('core.index'))
-    return render_template('create_ad.html', form=form, picForm=picForm, categoryForm1 = categoryForm1, categoryForm2 = categoryForm2, categoryForm3 = categoryForm3)
+    return render_template('create_ad.html', form=form, picForm=picForm, categoryForm = categoryForm)
 
 @ads.route('/<int:ad_id>')
 def advert(ad_id):
