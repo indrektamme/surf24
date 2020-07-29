@@ -5,8 +5,13 @@ from surf24.models import User
 from surf24 import db
 from surf24.users.picture_handler import add_prof_pic
 import os
+from flask_dance.contrib.google import make_google_blueprint, google
 
 users = Blueprint('users', __name__)
+google_blueprint = make_google_blueprint(
+    client_id="1036784998160-olupkrsegnsftplfndevg20g44ba09ac.apps.googleusercontent.com",
+    client_secret="QOvElaQvFJUyGW7fDIY-vmRQ",
+    scope=['openid', 'https://www.googleapis.com/auth/userinfo.email'])
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -33,7 +38,7 @@ def login():
         # The verify_password method comes from the User object
         # https://stackoverflow.com/questions/2209755/python-operation-vs-is-not
 
-        if user.check_password(form.password.data) and user is not None:
+        if user is not None and user.check_password(form.password.data):
             #Log in the user
 
             login_user(user)
@@ -49,6 +54,8 @@ def login():
                 next = url_for('core.index')
 
             return redirect(next)
+        else:
+            print("user on ")
     return render_template('login.html', form=form, current_user=current_user)
 
 
@@ -93,3 +100,36 @@ def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
     ads = Advert.query.filter_by(author=user).order_by(BlogPost.date.desc()).paginate(page=page, per_page=5)
     return render_template('user_blog_posts.html', blog_posts=blog_posts, user=user)
+
+
+@users.route("/google")
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    try:
+        resp = google.get("/oauth2/v2/userinfo")
+        assert resp.ok, resp.text
+        email=resp.json()["email"]
+        #return email
+        return resp.json()
+
+    except (Exception) as e:  # or maybe any OAuth2Error
+        print (e)
+        return redirect(url_for("google.login"))
+
+
+
+
+@users.route("/google_logout")
+def google_logout():
+    token = google_blueprint.token["access_token"]
+    # return token
+    resp = google.post(
+        "https://accounts.google.com/o/oauth2/revoke",
+        params={"token": token},
+        headers={"Content-Type": "application/x-www-form-urlencoded"}
+    )
+    #assert resp.ok, resp.text
+    #logout_user()        # Delete Flask-Login's session cookie
+    del google_blueprint.token  # Delete OAuth token from storage
+    return redirect(url_for('index'))

@@ -21,12 +21,25 @@
        <li class="nav-link"><a href="{{ url_for('users.logout') }}">Log Out</a></li>
        <li class="nav-link"><a href="{{ url_for('users.account') }}">Account</a></li>
        <li class="nav-link"><a href="{{ url_for('ads.create_ad') }}">Lisa kuulutus</a></li>
-       <li class="nav-link"><a href="{{ url_for('users.account') }}">Minu kuulutused</a></li>
+       <li class="nav-link"><a href="{{ url_for('core.myAdverts') }}">Minu kuulutused</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.account') }}">Minu profiil</a></li>
 
        {% else %}
        <li class="nav-link"><a href="{{ url_for('users.login') }}">Log In</a></li>
        <li class="nav-link"><a href="{{ url_for('users.register') }}">Register</a></li>
        {% endif %}
+
+
+
+       <div class="dropdown">
+         <button class="btn btn-secondary dropdown-toggle" type="button" id="language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         </button>
+         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+           <a class="dropdown-item" href="#" selected>EST</a>
+           <a class="dropdown-item" href="#">ENG</a>
+         </div>
+       </div>
+
 
    </ul>
 <div class="container">

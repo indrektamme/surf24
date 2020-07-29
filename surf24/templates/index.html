@@ -1,17 +1,100 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <div class="container">
-    {% for ad in adverts.items %}
-      <div class="card">
-        <div class="card-body">
-          <h2><a class = 'card-title' href="{{url_for('ads.advert', ad_id=ad.id )}}">{{ad.title}}</a></h2>
-          <p>Published on: {{ad.date.strftime('%Y-%m-%d')}}</p>
-          <a class='btn btn-primary' href="{{url_for('ads.advert', ad_id=ad.id )}}">Question</a>
-        </div>
+<div class="cointainer">
+
+{% if filterForm %}
+<form class="form_group" method = "POST" enctype="multipart/form-data">
+    {{filterForm.hidden_tag()}}
+  <div class="form_group" >
+    <div class="card border-dark mb-3" style="width:60rem; display: block; margin-left: auto; margin-right: auto">
+      <div class="card-header text-light bg-secondary">Otsingu filtrid</div>
+      <div class="card-body text-dark bg-light">
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+              {{filterForm.category1.label()}}
+              {{filterForm.category1(class="form-control", onchange="submit()")}}
+              <div class="invalid-tooltip">
+              </div>
+            </div>
+            {% if filterForm.category2.choices|length > 1  %}
+              <div class="col-md-3 mb-3">
+                {{filterForm.category2.label()}}
+                {{filterForm.category2(class="form-control", onchange="submit()")}}
+                <div class="invalid-tooltip">
+                </div>
+              </div>
+            {% endif %}
+            {% if filterForm.category3.choices|length > 1  %}
+              <div class="col-md-3 mb-3">
+                {{filterForm.category3.label()}}
+                {{filterForm.category3(class="form-control", onchange="submit()")}}
+                <div class="invalid-tooltip">
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        <div class="form-row">
+            <div class="col-md-2 mb-3">
+              {{filterForm.size.label()}}
+              {{filterForm.size(class="form-control", onchange="submit()")}}
+              <div class="invalid-tooltip">
+              </div>
+            </div>
+            <div class="col-md-2 mb-3">
+              {{filterForm.sizeMax.label()}}
+              {{filterForm.sizeMax(class="form-control", onchange="submit()")}}
+              <div class="invalid-tooltip">
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              {{filterForm.brand.label()}}
+              {{filterForm.brand(class="form-control", onchange="submit()")}}
+              <div class="invalid-tooltip">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="col-md-2 mb-3">
+                {{filterForm.price.label()}}
+                {{filterForm.price(class="form-control", onchange="submit()")}}
+                <div class="invalid-tooltip">
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                {{filterForm.priceMax.label()}}
+                {{filterForm.priceMax(class="form-control", onchange="submit()")}}
+                <div class="invalid-tooltip">
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                {{filterForm.searchKeyword.label()}}
+                {{filterForm.searchKeyword(class="form-control", onchange="submit()")}}
+                <div class="invalid-tooltip">
+                </div>
+              </div>
+            </div>
+        {{filterForm.submitbutton(class = "btn btn-primary")}}
       </div>
-    {% endfor %}
+    </div>
   </div>
+</div>
+{% else %}
+  <h1>Minu kuulutused</h1>
+{% endif %}
+<div class="container"">
+  {% for ad in adverts.items %}
+    <div class="card border-dark mb-3" style="width: 60rem; display: block; margin-left: auto; margin-right: auto">
+      <div class="card-header">{{ad.Advert.date.date()}}</div>
+      <div class="card-body text-dark">
+        <h5 class="card-title">{{ad.Advert.title}}</h5>
+        <p class="card-text">{{ad.Advert.text}}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
 
   <nav aria-label='Page navigation example'>
     <ul class="pagination justify-content-center">

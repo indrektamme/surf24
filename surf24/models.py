@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from enum import Enum
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
+from datetime import date
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -74,12 +75,16 @@ class Category(db.Model):
     name = db.Column(db.String(20))
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
-    categories = db.relationship('AdvertCategory', backref='category', lazy=True)
 
 class AdvertCategory(db.Model):
     __tablename__ = 'advert_category'
     adverts = db.relationship(Advert)
-    categories = db.relationship(Category)
     id = db.Column(db.Integer, primary_key=True, index=True)
     advert_id = db.Column(db.Integer, db.ForeignKey('adverts.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    category1 = db.Column(db.Integer) # categories on päris tabeli nimi!
+    category2 = db.Column(db.Integer)
+    category3 = db.Column(db.Integer)
+    brand = db.Column(db.String(20))
+    size = db.Column(db.Float)
+    price = db.Column(db.Numeric(10,2))
+    timestamp = db.Column(db.DateTime(timezone=True), nullable=False, default=date.today())

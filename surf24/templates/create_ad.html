@@ -8,18 +8,25 @@
     {{form.hidden_tag()}}
     {{picForm.hidden_tag()}}
 
-
-    <div class="form_group" >
+      <h1>{{title}}      </h1>
+    <div class="card text-white bg-secondary mb-3" >
       {{categoryForm.category1(class = "form-control form-control-lg", onchange="submit()")}}
-      {{categoryForm.category2(class = "form-control form-control-lg", onchange="submit()")}}
-
+      {% if categoryForm.category2.choices|length > 1  %}
+        {{categoryForm.category2(class = "form-control form-control-lg", onchange="submit()")}}
+      {% endif %}
+      {% if categoryForm.category3.choices|length > 1  %}
+          {{categoryForm.category3(class = "form-control form-control-lg", onchange="submit()")}}
+      {% endif %}
+      {{categoryForm.size.label(class="form-control-label")}}
+      {{categoryForm.size(class = "form-control form-control-lg")}}
+      {{categoryForm.brand.label(class="form-control-label")}}
+      {{categoryForm.brand(class = "form-control form-control-lg")}}
     </div>
-
 
 
     <div class="form_group" method = "POST" >
       {{form.title.label(class="form-control-label")}}
-      {{form.title(class = "form-control form-control-lg",onchange="submit()" )}}
+      {{form.title(class = "form-control form-control-lg")}}
     </div>
 
     <div class="form_group" method = "POST">
@@ -32,36 +39,18 @@
       {{form.price(class = "form-control form-control-lg")}}
     </div>
 
-    <div class="form_group" method = "POST">
-      {{picForm.picture1.label(class="form-control-label")}}
-      {{picForm.picture1(class = "form-control form-control-lg")}}
-    </div>
-
     {% if ad %}
     {% for image in ad.images %}
-    <div class="">
+    <div class="form_group">
       <img  src="{{ url_for('static', filename='ad_pics/' + image.image) }}" />
       <a href="{{url_for('ads.delete_image', pic_id=image.id)}}">Delete</a>
     </div>
     {% endfor %}
     {% endif %}
 
-
-
     <div class="form_group" method = "POST">
-      {{picForm.picture2(class = "form-control form-control-lg", onchange="this.form.submit()")}}
-    </div>
-
-    <div class="form_group" method = "POST">
-      {{picForm.picture3(class = "form-control form-control-lg")}}
-    </div>
-
-    <div class="form_group" method = "POST">
-      {{picForm.picture4(class = "form-control form-control-lg")}}
-    </div>
-
-    <div class="form_group" method = "POST">
-      {{picForm.picture5(class = "form-control form-control-lg")}}
+      {{picForm.picture.label(class="form-control-label")}}
+      {{picForm.picture(class = "form-control form-control-lg", onchange="submit()")}}
     </div>
 
     <div class="form_group" method = "POST">
