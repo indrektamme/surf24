@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.models import Advert, AdvertCategory, Category
 from surf24.core.forms import FilterForm
@@ -18,7 +18,12 @@ def index():
     per_page = request.args.get('per_page', 10, type=int)
     # sellise päringu teen juppideks:
     # adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory).filter_by(category1=23).filter_by(category2=26).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
-    adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory)
+    adverts = db.session.query(Advert, AdvertCategory, Category).join(AdvertCategory)
+
+
+
+    if filterForm.brand.data == None: print("brand on tyhi")
+    else: print("brand ei ole tyhi")
 
     if filterForm.category1.data != None and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
@@ -32,18 +37,26 @@ def index():
     if filterForm.size.data != None and filterForm.size.data > 0 :
         adverts = adverts.filter(AdvertCategory.size >= float(filterForm.size.data))
         page=1
+        session['filter_size'] = filterForm.size.data
     if filterForm.sizeMax.data != None and filterForm.sizeMax.data > 0 :
         adverts = adverts.filter(AdvertCategory.size <= float(filterForm.sizeMax.data))
         page=1
     if filterForm.brand.data != None and filterForm.brand.data != "":
         adverts = adverts.filter(AdvertCategory.brand.like('%'+filterForm.brand.data+'%'))
         page=1
+
+#    print(f"sessioon t66tab: {session.get('ok', '')}")
     if filterForm.price.data != None:
+        filterForm.price.data = filterForm.price.data
         page=1
         if filterForm.price.data == 0:
             adverts = adverts.filter(or_(AdvertCategory.price >= float(0), AdvertCategory.price == None))
+            filterForm.price.data = filterForm.price.data
         else:
+            k=filterForm.price.data
+            print(f"see on {filterForm.price.data}")
             adverts = adverts.filter(AdvertCategory.price >= float(filterForm.price.data))
+            filterForm.price.data = k
     if filterForm.priceMax.data != None:
         page=1
         if filterForm.priceMax.data == 0:
@@ -53,6 +66,12 @@ def index():
     if filterForm.searchKeyword.data != None and filterForm.searchKeyword.data != "":
         adverts = adverts.filter(Advert.text.like('%'+filterForm.searchKeyword.data+'%'))
         page=1
+
+    if filterForm.size.data == None:
+        print("ok")
+        filterForm.size.data = session.get('filter_size', '')
+
+    adverts = adverts.join(Category, AdvertCategory.category1==Category.id)
     adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     # nii saab printida muutujad

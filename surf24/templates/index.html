@@ -85,10 +85,15 @@
 <div class="container"">
   {% for ad in adverts.items %}
     <div class="card border-dark mb-3" style="width: 60rem; display: block; margin-left: auto; margin-right: auto">
-      <div class="card-header">{{ad.Advert.date.date()}}</div>
+      <div class="card-header">
+          {{ ad.Category.name }}
+          {% if ad.AdvertCategory.price != None %}
+            {{ad.AdvertCategory.price}}
+          {% endif %}
+      </div>
       <div class="card-body text-dark">
         <h5 class="card-title">{{ad.Advert.title}}</h5>
-        <p class="card-text">{{ad.Advert.text}}</p>
+        <p class="card-text">{{ad.Advert.text}}</p>{{ad.Advert.date.date()}}
       </div>
     </div>
   {% endfor %}
