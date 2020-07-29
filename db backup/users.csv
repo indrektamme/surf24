@@ -1,0 +1,2 @@
+id,username,email,phone,password_hash,oauth,profile_image
+1,one,one@one.com,,pbkdf2:sha256:150000$F0nDwaZZ$1463b9847641c12b266014857a1d148eda433f11a9a5321de52188d3dfc31575,,default_profile_image.png
