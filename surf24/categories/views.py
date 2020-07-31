@@ -19,7 +19,6 @@ def makeCategoryForm(choice1, choice2, choice3, size=0, brand="", form = None):
     form.category2.default = choice2
     form.category3.default = choice3
 
-    print("return form")
     return form
 
 def createCategoryChoices(parent):

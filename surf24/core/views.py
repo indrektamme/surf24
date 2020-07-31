@@ -13,7 +13,7 @@ core = Blueprint('core',__name__)
 @core.route('/', methods=['GET', 'POST'])
 def index():
     filterForm = FilterForm()
-    categoryForm = makeCategoryForm(filterForm.category1.data , filterForm.category2.data, filterForm.category3.data, 0, "", filterForm)
+
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # sellise päringu teen juppideks:
@@ -22,6 +22,18 @@ def index():
     if filterForm.brand.data == None: print("brand on tyhi")
     else: print("brand ei ole tyhi")
 
+    if filterForm.clearFilters.data:
+        filterForm.size.data = None
+        filterForm.sizeMax.data = None
+        filterForm.brand.data = None
+        filterForm.price.data = None
+        filterForm.priceMax.data = None
+        filterForm.searchKeyword.data = None
+        filterForm.category1.data = None
+        filterForm.category2.data = None
+        filterForm.category3.data = None
+        clear_session_filters()
+        #clear_filter_form(filterForm)
 
     # filtrid sessiooni
     if filterForm.hidden_if_form_sent.data != None:
@@ -45,31 +57,22 @@ def index():
         filterForm.category2.data = session.get('filter_category2', '')
         filterForm.category3.data = session.get('filter_category3', '')
 
-
+    makeCategoryForm(filterForm.category1.data , filterForm.category2.data, filterForm.category3.data, 0, "", filterForm)
     adverts = db.session.query(Advert, AdvertCategory, Category).join(AdvertCategory)
     if filterForm.category1.data != None and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
-
     if filterForm.category2.data != None and filterForm.category2.data > 20 :
         adverts = adverts.filter_by(category2=filterForm.category2.data)
-
     if filterForm.category3.data != None and filterForm.category3.data > 20 :
         adverts = adverts.filter_by(category3=filterForm.category3.data)
-
     if filterForm.size.data != None and filterForm.size.data > 0 :
         adverts = adverts.filter(AdvertCategory.size >= float(filterForm.size.data))
-
     if filterForm.sizeMax.data != None and filterForm.sizeMax.data > 0 :
         adverts = adverts.filter(AdvertCategory.size <= float(filterForm.sizeMax.data))
-
     if filterForm.brand.data != None and filterForm.brand.data != "":
         adverts = adverts.filter(AdvertCategory.brand.like('%'+filterForm.brand.data+'%'))
-
-
-#    print(f"sessioon t66tab: {session.get('ok', '')}")
     if filterForm.price.data != None:
         filterForm.price.data = filterForm.price.data
-
         if filterForm.price.data == 0:
             adverts = adverts.filter(or_(AdvertCategory.price >= float(0), AdvertCategory.price == None))
             filterForm.price.data = filterForm.price.data
@@ -107,3 +110,25 @@ def myAdverts():
     adverts = db.session.query(Advert, AdvertCategory).filter_by(author=current_user).join(AdvertCategory).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     return render_template('index.html' , current_user=current_user, adverts=adverts)
+
+def clear_filter_form(filterForm):
+    filterForm.size.data = None
+    filterForm.sizeMax.data = None
+    filterForm.brand.data = None
+    filterForm.price.data = 3
+    filterForm.priceMax.data = None
+    filterForm.searchKeyword.data = None
+    filterForm.category1.data = None
+    filterForm.category2.data = None
+    filterForm.category3.data = None
+
+def clear_session_filters():
+    session['filter_size'] = ""
+    session['filter_sizeMax'] = ""
+    session['filter_brand'] = ""
+    session['filter_price'] = ""
+    session['filter_priceMax'] = ""
+    session['filter_searchKeyword'] = ""
+    session['filter_category1'] = ""
+    session['filter_category2'] = ""
+    session['filter_category3'] = ""

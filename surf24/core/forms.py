@@ -15,4 +15,5 @@ class FilterForm(FlaskForm):
     priceMax = FloatField('max hind', validators=[NumberRange(min=0), Optional()])
     searchKeyword = StringField('Otsi sõna järgi', validators=[Optional()])
     submitbutton = SubmitField('Otsi')
+    clearFilters = SubmitField('Tühjenda filtrid')
     hidden_if_form_sent = HiddenField('', validators=[Optional()])
