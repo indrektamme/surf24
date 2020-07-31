@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, TextAreaField, FloatField, SelectField
+from wtforms import SubmitField, StringField, TextAreaField, FloatField, SelectField, HiddenField
 from wtforms.validators import DataRequired, NumberRange, Optional, NoneOf
 from flask_wtf.file import FileField, FileAllowed
 
@@ -15,3 +15,4 @@ class FilterForm(FlaskForm):
     priceMax = FloatField('max hind', validators=[NumberRange(min=0), Optional()])
     searchKeyword = StringField('Otsi sõna järgi', validators=[Optional()])
     submitbutton = SubmitField('Otsi')
+    hidden_if_form_sent = HiddenField('', validators=[Optional()])

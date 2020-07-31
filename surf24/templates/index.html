@@ -6,6 +6,7 @@
 {% if filterForm %}
 <form class="form_group" method = "POST" enctype="multipart/form-data">
     {{filterForm.hidden_tag()}}
+    {{ filterForm.hidden_if_form_sent() }}
   <div class="form_group" >
     <div class="card border-dark mb-3" style="width:60rem; display: block; margin-left: auto; margin-right: auto">
       <div class="card-header text-light bg-secondary">Otsingu filtrid</div>
