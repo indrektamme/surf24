@@ -8,6 +8,7 @@ from surf24 import db
 from sqlalchemy.orm import joinedload
 from sqlalchemy import or_
 from pprint import pprint
+from sqlalchemy.orm import aliased
 
 core = Blueprint('core',__name__)
 @core.route('/', methods=['GET', 'POST'])
@@ -19,21 +20,9 @@ def index():
     # sellise päringu teen juppideks:
     # adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory).filter_by(category1=23).filter_by(category2=26).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
-    if filterForm.brand.data == None: print("brand on tyhi")
-    else: print("brand ei ole tyhi")
-
     if filterForm.clearFilters.data:
-        filterForm.size.data = None
-        filterForm.sizeMax.data = None
-        filterForm.brand.data = None
-        filterForm.price.data = None
-        filterForm.priceMax.data = None
-        filterForm.searchKeyword.data = None
-        filterForm.category1.data = None
-        filterForm.category2.data = None
-        filterForm.category3.data = None
         clear_session_filters()
-        #clear_filter_form(filterForm)
+        clear_filter_form(filterForm)
 
     # filtrid sessiooni
     if filterForm.hidden_if_form_sent.data != None:
@@ -58,20 +47,22 @@ def index():
         filterForm.category3.data = session.get('filter_category3', '')
 
     makeCategoryForm(filterForm.category1.data , filterForm.category2.data, filterForm.category3.data, 0, "", filterForm)
-    adverts = db.session.query(Advert, AdvertCategory, Category).join(AdvertCategory)
+    Cat2 = aliased(Category)
+    Cat3 = aliased(Category)
+    adverts = db.session.query(Advert, AdvertCategory, Category, Cat2).join(AdvertCategory)
     if filterForm.category1.data != None and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
     if filterForm.category2.data != None and filterForm.category2.data > 20 :
         adverts = adverts.filter_by(category2=filterForm.category2.data)
     if filterForm.category3.data != None and filterForm.category3.data > 20 :
         adverts = adverts.filter_by(category3=filterForm.category3.data)
-    if filterForm.size.data != None and filterForm.size.data > 0 :
+    if filterForm.size.data != None and filterForm.size.data != "" and filterForm.size.data > 0 :
         adverts = adverts.filter(AdvertCategory.size >= float(filterForm.size.data))
-    if filterForm.sizeMax.data != None and filterForm.sizeMax.data > 0 :
+    if filterForm.sizeMax.data != None and filterForm.sizeMax.data != "" and filterForm.sizeMax.data > 0 :
         adverts = adverts.filter(AdvertCategory.size <= float(filterForm.sizeMax.data))
     if filterForm.brand.data != None and filterForm.brand.data != "":
         adverts = adverts.filter(AdvertCategory.brand.like('%'+filterForm.brand.data+'%'))
-    if filterForm.price.data != None:
+    if filterForm.price.data != None and filterForm.price.data != "":
         filterForm.price.data = filterForm.price.data
         if filterForm.price.data == 0:
             adverts = adverts.filter(or_(AdvertCategory.price >= float(0), AdvertCategory.price == None))
@@ -81,7 +72,7 @@ def index():
             print(f"see on {filterForm.price.data}")
             adverts = adverts.filter(AdvertCategory.price >= float(filterForm.price.data))
             filterForm.price.data = k
-    if filterForm.priceMax.data != None:
+    if filterForm.priceMax.data != None and filterForm.priceMax.data != "":
         page=1
         if filterForm.priceMax.data == 0:
             adverts = adverts.filter(or_(AdvertCategory.price <= float(0), AdvertCategory.price == None))
@@ -91,12 +82,12 @@ def index():
         adverts = adverts.filter(Advert.text.like('%'+filterForm.searchKeyword.data+'%'))
         page=1
 
-    adverts = adverts.join(Category, AdvertCategory.category1==Category.id)
+    adverts = adverts.outerjoin(Category, AdvertCategory.category1==Category.id)
+    adverts = adverts.outerjoin(Cat2, AdvertCategory.category2==Cat2.id)
     adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     # nii saab printida muutujad
-    # pprint(vars(adverts))
-
+    pprint(vars(adverts))
 
 
     return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm)
@@ -112,11 +103,11 @@ def myAdverts():
     return render_template('index.html' , current_user=current_user, adverts=adverts)
 
 def clear_filter_form(filterForm):
-    filterForm.size.data = None
-    filterForm.sizeMax.data = None
+    filterForm.size.data = ''
+    filterForm.sizeMax.data = ''
     filterForm.brand.data = None
-    filterForm.price.data = 3
-    filterForm.priceMax.data = None
+    filterForm.price.data = ''
+    filterForm.priceMax.data = ''
     filterForm.searchKeyword.data = None
     filterForm.category1.data = None
     filterForm.category2.data = None
