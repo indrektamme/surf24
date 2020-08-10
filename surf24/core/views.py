@@ -47,9 +47,9 @@ def index():
         filterForm.category3.data = session.get('filter_category3', '')
 
     makeCategoryForm(filterForm.category1.data , filterForm.category2.data, filterForm.category3.data, 0, "", filterForm)
-    Cat2 = aliased(Category)
-    Cat3 = aliased(Category)
-    adverts = db.session.query(Advert, AdvertCategory, Category, Cat2).join(AdvertCategory)
+    Cat2 = aliased(Category, name="Cat2")
+    Cat3 = aliased(Category, name="Cat3")
+    adverts = db.session.query(Advert, AdvertCategory, Category, Cat2, Cat3).join(AdvertCategory)
     if filterForm.category1.data != None and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
     if filterForm.category2.data != None and filterForm.category2.data > 20 :
@@ -84,10 +84,11 @@ def index():
 
     adverts = adverts.outerjoin(Category, AdvertCategory.category1==Category.id)
     adverts = adverts.outerjoin(Cat2, AdvertCategory.category2==Cat2.id)
+    adverts = adverts.outerjoin(Cat3, AdvertCategory.category3==Cat3.id)
     adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     # nii saab printida muutujad
-    pprint(vars(adverts))
+    # pprint(vars(adverts))
 
 
     return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm)
@@ -96,10 +97,13 @@ def index():
 def myAdverts():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
-    adverts = Advert.query.filter_by(author=current_user).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
-    # et saaks kasutada sama template: siis on keerukam sql, nagu / routes
-    adverts = db.session.query(Advert, AdvertCategory).filter_by(author=current_user).join(AdvertCategory).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
-
+    Cat2 = aliased(Category, name="Cat2")
+    Cat3 = aliased(Category, name="Cat3")
+    adverts = db.session.query(Advert, AdvertCategory, Category, Cat2, Cat3).filter_by(author=current_user).join(AdvertCategory)
+    adverts = adverts.outerjoin(Category, AdvertCategory.category1==Category.id)
+    adverts = adverts.outerjoin(Cat2, AdvertCategory.category2==Cat2.id)
+    adverts = adverts.outerjoin(Cat3, AdvertCategory.category3==Cat3.id)
+    adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
     return render_template('index.html' , current_user=current_user, adverts=adverts)
 
 def clear_filter_form(filterForm):
