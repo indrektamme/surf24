@@ -76,7 +76,12 @@
               </div>
               <div class="col-md-2 mb-3">
                 {{filterForm.priceMax.label()}}
-                {{filterForm.priceMax(class="form-control", onchange="submit(), value = filterForm.priceMax.data")}}
+                {% if filterForm.priceMax.data == None %}
+                  {{filterForm.priceMax(class="form-control", onchange="submit()", value = filterForm.priceMax.data)}}
+                {% else %}
+                  {{filterForm.priceMax(class="form-control", onchange="submit()", value = filterForm.priceMax.data)}}
+                {% endif %}
+
                 <div class="invalid-tooltip">
                 </div>
               </div>

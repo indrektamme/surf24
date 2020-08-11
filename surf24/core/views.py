@@ -21,11 +21,14 @@ def index():
     # adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory).filter_by(category1=23).filter_by(category2=26).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     if filterForm.clearFilters.data:
+        print("kaks")
         clear_session_filters()
         clear_filter_form(filterForm)
 
+
     # filtrid sessiooni
     if filterForm.hidden_if_form_sent.data != None:
+        print("üks")
         session['filter_size'] = filterForm.size.data
         session['filter_sizeMax'] = filterForm.sizeMax.data
         session['filter_brand'] = filterForm.brand.data
@@ -89,7 +92,6 @@ def index():
 
     # nii saab printida muutujad
     # pprint(vars(adverts))
-
 
     return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm)
 
