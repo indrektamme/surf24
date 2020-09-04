@@ -99,7 +99,12 @@
   </div>
 </div>
 {% else %}
-  <h1>Minu kuulutused</h1>
+
+  {% if current_user == author %}
+    <h1>Minu kuulutused</h1>
+  {% else %}
+    <h1>Kasutaja {{author.username}} kuulutused</h1>
+  {% endif %}
 {% endif %}
 <div class="container"">
   {% for ad in adverts.items %}
@@ -118,14 +123,14 @@
           -> {{ ad.Cat3.name }}
         {% endif %}
 
-
           {% if ad.AdvertCategory.price != None %}
             {{ad.AdvertCategory.price}}
           {% endif %}
       </div>
       <div class="card-body text-dark">
         <h5 class="card-title">{{ad.Advert.id}} {{ad.Advert.title}}</h5>
-        <p class="card-text">{{ad.Advert.text}}</p>{{ad.Advert.date.date()}}{{ad.Advert.author}}
+        <p class="card-text">{{ad.Advert.text}}</p>{{ad.Advert.date.date()}}<br>{{ad.Advert.author.username}}
+        <a href="{{ url_for('core.userAdverts', user_id = ad.Advert.author.id) }}">{{ad.Advert.author.username}} kuulutused</a>
       </div>
     </div>
   {% endfor %}

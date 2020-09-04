@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, session
 from flask_login import login_user, current_user, logout_user, login_required
-from surf24.models import Advert, AdvertCategory, Category
+from surf24.models import Advert, AdvertCategory, Category, User
 from surf24.core.forms import FilterForm
 from surf24.categories.views import makeCategoryForm
 from flask_login import current_user, login_required
@@ -25,10 +25,8 @@ def index():
         clear_session_filters()
         clear_filter_form(filterForm)
 
-
     # filtrid sessiooni
     if filterForm.hidden_if_form_sent.data != None:
-        print("üks")
         session['filter_size'] = filterForm.size.data
         session['filter_sizeMax'] = filterForm.sizeMax.data
         session['filter_brand'] = filterForm.brand.data
@@ -107,6 +105,21 @@ def myAdverts():
     adverts = adverts.outerjoin(Cat3, AdvertCategory.category3==Cat3.id)
     adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
     return render_template('index.html' , current_user=current_user, adverts=adverts)
+
+
+@core.route('/<int:user_id>/userads', methods=['GET', 'POST'])
+def userAdverts(user_id):
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    Cat2 = aliased(Category, name="Cat2")
+    Cat3 = aliased(Category, name="Cat3")
+    adverts = db.session.query(Advert, AdvertCategory, Category, Cat2, Cat3).filter_by(user_id=user_id).join(AdvertCategory)
+    adverts = adverts.outerjoin(Category, AdvertCategory.category1==Category.id)
+    adverts = adverts.outerjoin(Cat2, AdvertCategory.category2==Cat2.id)
+    adverts = adverts.outerjoin(Cat3, AdvertCategory.category3==Cat3.id)
+    adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
+    author = User.query.filter_by(id=user_id).first()
+    return render_template('index.html' , current_user=current_user, adverts=adverts, author=author)
 
 def clear_filter_form(filterForm):
     filterForm.size.data = ''
