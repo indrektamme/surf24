@@ -1,9 +1,11 @@
 from surf24 import db, login_manager
 from flask_login import UserMixin
 from enum import Enum
+import enum
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 from datetime import date
+from surf24.users.roles import Roles
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -22,6 +24,7 @@ class condition(Enum):
     USED=2
     NEW=3
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -30,9 +33,9 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(15), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     oauth = db.Column(db.Enum(oauth))
+    role = db.Column(db.Enum(Roles), default='USER')
     profile_image = db.Column(db.String(20), nullable=False, default='default_profile_image.png')
     adverts = db.relationship('Advert', backref='author', lazy=True)
-
 
     def __init__(self, email, username, password):
         self.email = email
