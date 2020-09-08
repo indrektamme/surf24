@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Admin users</h3>
+
+  <table border='1'><tr><th>Nimi</th><th>E-mail</th><th>Roll</th><th>Oauth</th></tr>
+  {% for user in users %}
+    <tr><td>
+    {{user.username}}</td><td>
+    {{user.email}}</td><td>
+    {{user.role}}</td><td>
+    {{user.phone}}</td><td>
+    {{user.oauth}}<a href=''>Edit</a></td>
+    </tr>
+  {% endfor %}
+  </table>
+
+{% endblock %}

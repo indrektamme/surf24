@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm
+from surf24.users.roles import Roles
 from surf24.models import User
 from surf24 import db
 from surf24.users.picture_handler import add_prof_pic
@@ -70,16 +71,12 @@ def logout():
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-
     form = UpdateUserForm()
-
     if form.validate_on_submit():
-        print(form)
         if form.picture.data:
             username = current_user.username
             pic = add_prof_pic(form.picture.data,username)
             current_user.profile_image = pic
-
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -117,9 +114,6 @@ def google_login():
         print (e)
         return redirect(url_for("google.login"))
 
-
-
-
 @users.route("/google_logout")
 def google_logout():
     token = google_blueprint.token["access_token"]
@@ -132,4 +126,14 @@ def google_logout():
     #assert resp.ok, resp.text
     #logout_user()        # Delete Flask-Login's session cookie
     del google_blueprint.token  # Delete OAuth token from storage
-    return redirect(url_for('index'))
+    return redirect(url_for('core.index'))
+
+@users.route("/admin_users")
+@login_required
+def admin_users():
+    if current_user.role == Roles.ADMIN:
+        users = User.query.all()
+        return render_template('admin_users.html', users=users, Roles=Roles)
+    else:
+        print(current_user.role)
+    return redirect(url_for('core.index'))

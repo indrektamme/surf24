@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Categories</h3>
+
+  <table border='1'><tr><th>ID</th><th>Category name</th><th>Parent ID</th><th>Order</th></tr>
+  {% for category in categories %}
+    <tr><td>
+    {{category.id}}</td><td>
+    {% if category.name != None %}
+      {{category.name}}
+    {% endif %}
+    </td><td>
+    {% if category.parent != None %}
+      {{category.parent}}
+    {% endif %}
+    </td><td>
+    {% if category.order != None %}
+      {{category.order}}
+    {% endif %}</td><td>
+    <a href='{{ url_for('categories.admin_edit_category', cat_id=category.id) }}'>Edit</a></td>
+    </tr>
+  {% endfor %}
+    <tr><td></td><td><a href='{{ url_for('categories.admin_add_category') }}'>+ New record</a></td></tr>
+  </table>
+
+{% endblock %}

@@ -9,6 +9,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy import or_
 from pprint import pprint
 from sqlalchemy.orm import aliased
+from surf24.users.roles import Roles
 
 core = Blueprint('core',__name__)
 @core.route('/', methods=['GET', 'POST'])
@@ -21,7 +22,6 @@ def index():
     # adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory).filter_by(category1=23).filter_by(category2=26).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
 
     if filterForm.clearFilters.data:
-        print("kaks")
         clear_session_filters()
         clear_filter_form(filterForm)
 
@@ -70,7 +70,6 @@ def index():
             filterForm.price.data = filterForm.price.data
         else:
             k=filterForm.price.data
-            print(f"see on {filterForm.price.data}")
             adverts = adverts.filter(AdvertCategory.price >= float(filterForm.price.data))
             filterForm.price.data = k
     if filterForm.priceMax.data != None and filterForm.priceMax.data != "":
@@ -91,7 +90,7 @@ def index():
     # nii saab printida muutujad
     # pprint(vars(adverts))
 
-    return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm)
+    return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm, Roles = Roles)
 
 @core.route('/my', methods=['GET', 'POST'])
 def myAdverts():

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, TextAreaField, FloatField, SelectField
+from wtforms import SubmitField, StringField, TextAreaField, FloatField, SelectField, IntegerField
 from wtforms.validators import DataRequired, NumberRange, Optional, NoneOf
 from flask_wtf.file import FileField, FileAllowed
 
@@ -10,3 +10,9 @@ class CategoryForm(FlaskForm):
     category3 = SelectField('Alamkategooria', coerce=int, choices = choices, validators=[NumberRange(min=0), Optional()])
     size = FloatField('Suurus', validators=[NumberRange(min=0), Optional()])
     brand = StringField('Brand', validators=[Optional()])
+
+class EditCategoryForm(FlaskForm):
+    name = StringField('Category name', validators=[Optional()])
+    parent = IntegerField('Parent ID', validators=[NumberRange(min=0), Optional()])
+    order = IntegerField('Order', validators=[NumberRange(min=0), Optional()])
+    submitbutton = SubmitField('Save')
