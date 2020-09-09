@@ -17,3 +17,7 @@ class FilterForm(FlaskForm):
     submitbutton = SubmitField('Otsi')
     clearFilters = SubmitField('Tühjenda filtrid')
     hidden_if_form_sent = HiddenField('', validators=[Optional()])
+
+class LanguageForm(FlaskForm):
+    choices = [('en','ENG'), ('ee', 'EST'), ('es', 'ESP'), ('ru', 'RUS')]
+    languages = SelectField('valikud', choices = choices, validators=[Optional()])

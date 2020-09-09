@@ -10,7 +10,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
-
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     username = StringField('Username', validators=[DataRequired()])
@@ -28,7 +27,6 @@ class RegistrationForm(FlaskForm):
         # Check if not None for that username!
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Sorry, that username is taken!')
-
 
 class UpdateUserForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])

@@ -4,18 +4,24 @@ from surf24.models import Advert, AdvertCategory, Category, User
 from surf24.core.forms import FilterForm
 from surf24.categories.views import makeCategoryForm
 from flask_login import current_user, login_required
-from surf24 import db
+from surf24 import db, babel
 from sqlalchemy.orm import joinedload
 from sqlalchemy import or_
 from pprint import pprint
 from sqlalchemy.orm import aliased
 from surf24.users.roles import Roles
+from flask_babel import Babel, gettext, ngettext, lazy_gettext
 
 core = Blueprint('core',__name__)
+
 @core.route('/', methods=['GET', 'POST'])
 def index():
-    filterForm = FilterForm()
 
+    filterForm = FilterForm()
+    k = gettext(u'Hello World')
+    print(k)
+    k = gettext(u'Hell')
+    print(k)
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # sellise päringu teen juppideks:

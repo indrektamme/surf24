@@ -1,16 +1,19 @@
 import os
-from flask import Flask, session
+from flask import Flask, session, g, request
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import joinedload
 from flask_babel import Babel
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_babel import Babel, gettext, ngettext, lazy_gettext
+
 
 app = Flask(__name__)
-
+app.config.from_pyfile('mysettings.cfg')
+babel = Babel(app)
 #app.config.update(SECRET_KEY=os.urandom(24))
-
+app.config['BABEL_DEFAULT_LOCALE'] = "de"
 app.config['SECRET_KEY'] = "superpass"
 app.config['SESSION_TYPE'] = 'filesystem'
 #app.secret_key = os.urandom(24)
@@ -26,7 +29,27 @@ db = SQLAlchemy(app)
 SESSION_TYPE = 'filesystem'
 Session(app)
 
+# @babel.localeselector
+# def get_locale():
+#     # if a user is logged in, use the locale from the user settings
+#     user = getattr(g, 'user', None)
+#     if user is not None:
+#         return user.locale
+#     # otherwise try to guess the language from the user accept
+#     # header the browser transmits.  We support de/fr/en in this
+#     # example.  The best match wins.
+#     return request.accept_languages.best_match(['de', 'fr', 'en', 'ee'])
 
+
+@babel.localeselector
+def get_locale():
+    return 'de'
+
+@babel.timezoneselector
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
 
 
 
