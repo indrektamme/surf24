@@ -20,4 +20,4 @@ class FilterForm(FlaskForm):
 
 class LanguageForm(FlaskForm):
     choices = [('en','ENG'), ('ee', 'EST'), ('es', 'ESP'), ('ru', 'RUS')]
-    languages = SelectField('valikud', choices = choices, validators=[Optional()])
+    language = SelectField('valikud', choices = choices, validators=[Optional()])

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.models import Advert, AdvertCategory, Category, User
-from surf24.core.forms import FilterForm
+from surf24.core.forms import FilterForm, LanguageForm
 from surf24.categories.views import makeCategoryForm
 from flask_login import current_user, login_required
 from surf24 import db, babel
@@ -16,7 +16,7 @@ core = Blueprint('core',__name__)
 
 @core.route('/', methods=['GET', 'POST'])
 def index():
-
+    languageForm = LanguageForm()
     filterForm = FilterForm()
     k = gettext(u'Hello World')
     print(k)
@@ -96,9 +96,10 @@ def index():
     # nii saab printida muutujad
     # pprint(vars(adverts))
 
-    return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm, Roles = Roles)
+    return render_template('index.html' , current_user=current_user, adverts=adverts, filterForm=filterForm, Roles = Roles, languageForm=languageForm)
 
 @core.route('/my', methods=['GET', 'POST'])
+@core.route('/minu', methods=['GET', 'POST'])
 def myAdverts():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
