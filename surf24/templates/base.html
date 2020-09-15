@@ -36,11 +36,12 @@
        {% endif %}
 
 
+       <a href = "{{ url_for(request.endpoint, lang_code='en') }}">en</a>&nbsp;
+       <a href = "{{ url_for(request.endpoint, lang_code='ee') }}">ee</a>&nbsp;
+       <a href = "{{ url_for(request.endpoint, lang_code='ru') }}">ru</a>&nbsp;
+       <a href = "{{ url_for(request.endpoint, lang_code='es') }}">es</a>&nbsp;
+       <a href = "{{ url_for(request.endpoint, lang_code='de') }}">de</a>&nbsp;
 
-       <div class="dropdown">
-         {{languageForm.hidden_tag()}}
-         {{languageForm.language()}}
-       </div>
 
        {{_('Hell')}}
 

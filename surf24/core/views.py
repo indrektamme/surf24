@@ -15,13 +15,10 @@ from flask_babel import Babel, gettext, ngettext, lazy_gettext
 core = Blueprint('core',__name__)
 
 @core.route('/', methods=['GET', 'POST'])
+@core.route('/ok', methods=['GET', 'POST'])
 def index():
     languageForm = LanguageForm()
     filterForm = FilterForm()
-    k = gettext(u'Hello World')
-    print(k)
-    k = gettext(u'Hell')
-    print(k)
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # sellise päringu teen juppideks:

@@ -47,6 +47,7 @@ def get_locale():
     #return 'de'
     if not g.get('lang_code', None):
         g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
+    print(g.lang_code)
     return g.lang_code
 
 @babel.timezoneselector
@@ -54,7 +55,6 @@ def get_timezone():
     user = getattr(g, 'user', None)
     if user is not None:
         return user.timezone
-
 
 
 login_manager = LoginManager()
