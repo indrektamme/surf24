@@ -1,5 +1,5 @@
 import os
-from flask import Flask, session, g, request
+from flask import Flask, session, g, request, redirect, url_for
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import joinedload
@@ -47,6 +47,7 @@ def get_locale():
     #return 'de'
     if not g.get('lang_code', None):
         g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
+        print("siin")
     print(g.lang_code)
     return g.lang_code
 
@@ -57,12 +58,20 @@ def get_timezone():
         return user.timezone
 
 
+@app.route('/')
+def home():
+    g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
+    return redirect(url_for('multilingual.index'))
+
+
 login_manager = LoginManager()
 from surf24.core.views import core
 from surf24.users.views import users
 from surf24.users.views import google_blueprint
 from surf24.ads.views import ads
 from surf24.categories.views import categories
+from surf24.multilingual import multilingual
+app.register_blueprint(multilingual)
 app.register_blueprint(core)
 app.register_blueprint(users)
 app.register_blueprint(google_blueprint, url_prefix="/google_login")
