@@ -29,7 +29,7 @@ db = SQLAlchemy(app)
 
 SESSION_TYPE = 'filesystem'
 Session(app)
-
+#session['lang'] = 'en'
 # @babel.localeselector
 # def get_locale():
 #     # if a user is logged in, use the locale from the user settings
@@ -44,11 +44,9 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
-    #return 'de'
+    return 'de'
     if not g.get('lang_code', None):
         g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
-        print("siin")
-    print(g.lang_code)
     return g.lang_code
 
 @babel.timezoneselector

@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, session
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 from surf24.users.roles import Roles
@@ -29,7 +29,6 @@ def register():
 
 @users.route('/login', methods=['GET', 'POST'])
 def login():
-
     form = LoginForm()
     if form.validate_on_submit():
         # Grab the user from our User Models table

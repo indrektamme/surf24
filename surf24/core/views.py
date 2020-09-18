@@ -15,8 +15,12 @@ from surf24 import multilingual
 
 core = Blueprint('core',__name__)
 
+@core.route('/cake', defaults={'lang_code': 'en'})
+@core.route('/kuchen', defaults={'lang_code': 'de'})
+@core.route('/gateau', defaults={'lang_code': 'fr'})
 @core.route('/oj', methods=['GET', 'POST'])
 def index():
+    print(session['lang'])
     languageForm = LanguageForm()
     filterForm = FilterForm()
     page = request.args.get('page', 1, type=int)
