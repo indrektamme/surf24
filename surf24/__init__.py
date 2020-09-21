@@ -44,7 +44,7 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
-    return 'de'
+    return session['lang']
     if not g.get('lang_code', None):
         g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
     return g.lang_code
@@ -56,10 +56,10 @@ def get_timezone():
         return user.timezone
 
 
-@app.route('/')
-def home():
-    g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
-    return redirect(url_for('multilingual.index'))
+# @app.route('/')
+# def home():
+#     g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])
+#     return redirect(url_for('multilingual.index'))
 
 
 login_manager = LoginManager()
@@ -68,8 +68,8 @@ from surf24.users.views import users
 from surf24.users.views import google_blueprint
 from surf24.ads.views import ads
 from surf24.categories.views import categories
-from surf24.multilingual import multilingual
-app.register_blueprint(multilingual)
+#from surf24.multilingual import multilingual
+#app.register_blueprint(multilingual)
 app.register_blueprint(core)
 app.register_blueprint(users)
 app.register_blueprint(google_blueprint, url_prefix="/google_login")

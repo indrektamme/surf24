@@ -41,10 +41,18 @@
        <a href = "{{ url_for(request.endpoint, lang_code='ru') }}">ru</a>&nbsp;
        <a href = "{{ url_for(request.endpoint, lang_code='es') }}">es</a>&nbsp;
        <a href = "{{ url_for(request.endpoint, lang_code='de') }}">de</a>&nbsp;
+       <a href = "{{ url_for('core.lang') }}">try</a>&nbsp;
 
+       {{_('Hell')}}-{{ session['lang'] }}
 
-       {{_('Hell')}}
-
+     <form class="form_group" method = "POST" action="{{ url_for('core.lang') }}" enctype="multipart/form-data" onchange="submit()">
+       <select id="cars" name="cars">
+         <option value="en" {% if session['lang'] == 'en' %}selected{% endif %}>English</option>
+         <option value="es" {% if session['lang'] == 'es' %}selected{% endif %}>Espaniol</option>
+         <option value="et" {% if session['lang'] == 'et' %}selected{% endif %}>Eesti</option>
+         <option value="de" {% if session['lang'] == 'de' %}selected{% endif %} >Deutch</option>
+       </select>
+     </form>
 
    </ul>
 <div class="container">

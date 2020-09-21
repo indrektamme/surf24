@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, url_for, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 from surf24.models import Advert, AdvertCategory, Category, User
 from surf24.core.forms import FilterForm, LanguageForm
@@ -15,15 +15,27 @@ from surf24 import multilingual
 
 core = Blueprint('core',__name__)
 
-@core.route('/cake', defaults={'lang_code': 'en'})
-@core.route('/kuchen', defaults={'lang_code': 'de'})
-@core.route('/gateau', defaults={'lang_code': 'fr'})
-@core.route('/oj', methods=['GET', 'POST'])
+#@core.route('/cake', defaults={'lang_code': 'en'})
+#@core.route('/kuchen', defaults={'lang_code': 'de'})
+#@core.route('/gateau', defaults={'lang_code': 'fr'})
+#@core.route('/oj', methods=['GET', 'POST'])
+
+
+
+@core.route('/lang', methods=['GET', 'POST'])
+def lang():
+    k = request.referrer[:]
+    session['lang'] = request.values.get("cars")
+    return redirect(k)
+
+
+@core.route('/index', methods=['GET', 'POST'])
+@core.route('/', methods=['GET', 'POST'])
 def index():
-    print(session['lang'])
+    #print(session['lang'])
     languageForm = LanguageForm()
     filterForm = FilterForm()
-    page = request.args.get('page', 1, type=int)
+    page = request.form.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # sellise päringu teen juppideks:
     # adverts = db.session.query(Advert, AdvertCategory).join(AdvertCategory).filter_by(category1=23).filter_by(category2=26).order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
