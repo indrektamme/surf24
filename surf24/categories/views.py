@@ -1,5 +1,5 @@
 from surf24 import db
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, session
 from surf24.models import Category, User
 from surf24.categories.forms import CategoryForm, EditCategoryForm
 from flask_login import login_user, current_user, logout_user, login_required
@@ -28,6 +28,17 @@ def createCategoryChoices(parent):
     choices1 = Category.query.filter_by(parent=parent).all()
     for element in choices1:
         sequence = (element.id, element.name)
+        if (session['lang'] == 'et'):
+            sequence = (element.id, element.ee)
+        if (session['lang'] == 'de'):
+            sequence = (element.id, element.de)
+        if (session['lang'] == 'es'):
+            sequence = (element.id, element.es)
+        if (session['lang'] == 'fr'):
+            sequence = (element.id, element.fr)
+        if (session['lang'] == 'ru'):
+            sequence = (element.id, element.ru)
+
         choices.append(sequence)
     return choices
 

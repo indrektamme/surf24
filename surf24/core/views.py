@@ -11,7 +11,7 @@ from pprint import pprint
 from sqlalchemy.orm import aliased
 from surf24.users.roles import Roles
 from flask_babel import Babel, gettext, ngettext, lazy_gettext
-from surf24 import multilingual
+#from surf24 import multilingual
 
 core = Blueprint('core',__name__)
 
@@ -70,9 +70,13 @@ def index():
     Cat2 = aliased(Category, name="Cat2")
     Cat3 = aliased(Category, name="Cat3")
     adverts = db.session.query(Advert, AdvertCategory, Category, Cat2, Cat3).join(AdvertCategory)
-    if filterForm.category1.data != None and len(filterForm.category1.data) > 20 :
+    print(filterForm.category1.data)
+    print("okk")
+    if (filterForm.category1.data==""):
+        print("okk1")
+    if filterForm.category1.data != None and filterForm.category1.data != "" and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
-    if filterForm.category2.data != None and len(filterForm.category2.data) > 20 :
+    if filterForm.category2.data != None and filterForm.category2.data != "" and int(filterForm.category2.data) > 20 :
         adverts = adverts.filter_by(category2=filterForm.category2.data)
     if filterForm.category3.data != None and len(filterForm.category3.data) > 20 :
         adverts = adverts.filter_by(category3=filterForm.category3.data)

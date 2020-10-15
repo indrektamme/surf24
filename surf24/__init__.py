@@ -44,6 +44,10 @@ Session(app)
 
 @babel.localeselector
 def get_locale():
+    if (session.get('lang')):
+        return session['lang']
+    else:
+        session['lang'] = 'en'
     return session['lang']
     if not g.get('lang_code', None):
         g.lang_code = request.accept_languages.best_match(app.config['LANGUAGES'])

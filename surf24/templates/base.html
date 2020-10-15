@@ -44,6 +44,7 @@
        <a href = "{{ url_for('core.lang') }}">try</a>&nbsp;
 
        {{_('Hell')}}-{{ session['lang'] }}
+       {{_('Uus tõlge')}}
 
      <form class="form_group" method = "POST" action="{{ url_for('core.lang') }}" enctype="multipart/form-data" onchange="submit()">
        <select id="cars" name="cars">
