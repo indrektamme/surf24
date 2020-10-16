@@ -13,38 +13,27 @@
     <ul class="nav">
 
      <li class="nav-item">
-       <a class="nav-link" href="{{ url_for('core.index') }}">Home</a>
+       <a class="nav-link" href="{{ url_for('core.index') }}">{{_('Home')}}</a>
 
      </li>
 
        {% if current_user.is_authenticated %}
-       <li class="nav-link"><a href="{{ url_for('users.logout') }}">Log Out</a></li>
-       <li class="nav-link"><a href="{{ url_for('users.account') }}">Account</a></li>
-       <li class="nav-link"><a href="{{ url_for('ads.create_ad') }}">Lisa kuulutus</a></li>
-       <li class="nav-link"><a href="{{ url_for('core.myAdverts') }}">Minu kuulutused</a></li>
-       <li class="nav-link"><a href="{{ url_for('users.account') }}">Minu profiil</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.logout') }}">{{_('Log Out')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.account') }}">{{_('Account')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('ads.create_ad') }}">{{_('Add new advert')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('core.myAdverts') }}">{{_('My adds')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.account') }}">{{_('My profile')}}</a></li>
 
        {% else %}
-       <li class="nav-link"><a href="{{ url_for('users.login') }}">Log In</a></li>
-       <li class="nav-link"><a href="{{ url_for('users.register') }}">Register</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.login') }}">{{_('Log In')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.register') }}">{{_('Register')}}</a></li>
        {% endif %}
 
        {% if current_user.is_authenticated and current_user.role == Roles.ADMIN %}
 
-       <li class="nav-link"><a href="{{ url_for('users.admin_users') }}">Admin users</a></li>
-       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">Admin categories</a></li>
+       <li class="nav-link"><a href="{{ url_for('users.admin_users') }}">{{_('Admin users')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Admin categories')}}</a></li>
        {% endif %}
-
-
-       <a href = "{{ url_for(request.endpoint, lang_code='en') }}">en</a>&nbsp;
-       <a href = "{{ url_for(request.endpoint, lang_code='ee') }}">ee</a>&nbsp;
-       <a href = "{{ url_for(request.endpoint, lang_code='ru') }}">ru</a>&nbsp;
-       <a href = "{{ url_for(request.endpoint, lang_code='es') }}">es</a>&nbsp;
-       <a href = "{{ url_for(request.endpoint, lang_code='de') }}">de</a>&nbsp;
-       <a href = "{{ url_for('core.lang') }}">try</a>&nbsp;
-
-       {{_('Hell')}}-{{ session['lang'] }}
-       {{_('Uus tõlge')}}
 
      <form class="form_group" method = "POST" action="{{ url_for('core.lang') }}" enctype="multipart/form-data" onchange="submit()">
        <select id="cars" name="cars">
@@ -57,6 +46,7 @@
 
    </ul>
 <div class="container">
+
     {% block content %}
 
     {% endblock %}

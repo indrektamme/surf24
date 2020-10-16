@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-09 10:19+0300\n"
+"POT-Creation-Date: 2020-10-16 11:38+0300\n"
 "PO-Revision-Date: 2020-09-09 10:00+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,20 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: templates/base.html:46
-msgid "Hell"
-msgstr "põrgu"
+#: templates/base.html:16
+msgid "Home"
+msgstr "Zuhause"
 
-#: templates/base.html:47
-msgid "Uus tõlge"
-msgstr ""
+#: templates/base.html:21
+msgid "Log Out"
+msgstr "Ausloggen"
+
+#: templates/base.html:22
+msgid "Account"
+msgstr "Konto"
+
+#: templates/base.html:23
+msgid "Add new advert"
+msgstr "Neue Werbung hinzufügen"
+
+#: templates/base.html:24
+msgid "My adds"
+msgstr "meine Anzeigen"
+
+#: templates/base.html:25
+msgid "My profile"
+msgstr "mein Profil"
+
+#: templates/base.html:28
+msgid "Log In"
+msgstr "Einloggen"
+
+#: templates/base.html:29
+msgid "Register"
+msgstr "Registrieren"
+
+#: templates/base.html:34
+msgid "Admin users"
+msgstr "Benutzerverwaltung"
+
+#: templates/base.html:35
+msgid "Admin categories"
+msgstr "Kategorien bearbeiten"
 
 #: templates/index.html:12
 msgid "Search filters"
-msgstr ""
+msgstr "Suchfilter"
 
 #~ msgid "Hello World"
 #~ msgstr "oi"
 
 #~ msgid "Username"
 #~ msgstr "gebruikersnaam"
+
+#~ msgid "Hell"
+#~ msgstr "põrgu"
+
+#~ msgid "Uus tõlge"
+#~ msgstr ""
+
