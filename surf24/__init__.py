@@ -7,6 +7,7 @@ from flask_babel import Babel
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_babel import Babel, gettext, ngettext, lazy_gettext
+from surf24.users.roles import Roles
 
 
 app = Flask(__name__)
@@ -86,3 +87,10 @@ Migrate(app,db)
 
 login_manager.init_app(app)
 login_manager.login_view = "users.login"
+
+
+# @app.context_processor
+# def include_permission_class():
+#     return {'Roles': Roles}
+
+app.add_template_global(Roles, 'Roles')

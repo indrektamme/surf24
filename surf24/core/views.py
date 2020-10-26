@@ -78,7 +78,7 @@ def index():
         adverts = adverts.filter_by(category1=filterForm.category1.data)
     if filterForm.category2.data != None and filterForm.category2.data != "" and int(filterForm.category2.data) > 20 :
         adverts = adverts.filter_by(category2=filterForm.category2.data)
-    if filterForm.category3.data != None and len(filterForm.category3.data) > 20 :
+    if filterForm.category3.data != None and int(filterForm.category3.data) > 20 :
         adverts = adverts.filter_by(category3=filterForm.category3.data)
     if filterForm.size.data != None and filterForm.size.data != "" and filterForm.size.data > 0 :
         adverts = adverts.filter(AdvertCategory.size >= float(filterForm.size.data))
@@ -127,7 +127,7 @@ def myAdverts():
     adverts = adverts.outerjoin(Cat2, AdvertCategory.category2==Cat2.id)
     adverts = adverts.outerjoin(Cat3, AdvertCategory.category3==Cat3.id)
     adverts = adverts.order_by(Advert.date.desc()).paginate(page=page,per_page=per_page)
-    return render_template('index.html' , current_user=current_user, adverts=adverts)
+    return render_template('index.html' , author=current_user, adverts=adverts)
 
 
 @core.route('/<int:user_id>/userads', methods=['GET', 'POST'])

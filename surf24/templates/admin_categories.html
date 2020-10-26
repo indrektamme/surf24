@@ -2,7 +2,7 @@
 {% block content %}
   <h3>Categories</h3>
 
-  <table border='1'><tr><th>ID</th><th>Category name</th><th>Parent ID</th><th>Order</th></tr>
+  <table border='1'><tr><th>ID</th><th>Category name</th><th>Parent ID</th><th>Order</th><th>Estonian</th><th>Russian</th><th>Spanish</th></tr>
   {% for category in categories %}
     <tr><td>
     {{category.id}}</td><td>
@@ -16,7 +16,17 @@
     </td><td>
     {% if category.order != None %}
       {{category.order}}
-    {% endif %}</td><td>
+    {% endif %}
+    </td><td>
+    </td><td>
+    {% if category.et != None %}
+      {{category.et}}
+    {% endif %}
+    </td><td>
+    {% if category.es != None %}
+      {{category.es}}
+    {% endif %}
+    </td><td>
     <a href='{{ url_for('categories.admin_edit_category', cat_id=category.id) }}'>Edit</a></td>
     </tr>
   {% endfor %}
@@ -24,3 +34,15 @@
   </table>
 
 {% endblock %}
+
+
+ id = db.Column(db.Integer, primary_key=True, index=True)
+    name = db.Column(db.String(30))
+    parent = db.Column(db.Integer)
+    order = db.Column(db.Integer)
+    de = db.Column(db.String(30))
+    fr = db.Column(db.String(30))
+    ru = db.Column(db.String(30))
+    ee = db.Column(db.String(30))
+    es = db.Column(db.String(30))
+    fi = db.Column(db.String(30))

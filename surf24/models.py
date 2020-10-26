@@ -84,7 +84,7 @@ class Category(db.Model):
     ru = db.Column(db.String(30))
     ee = db.Column(db.String(30))
     es = db.Column(db.String(30))
-    fi = db.Column(db.String(30))
+    eo = db.Column(db.String(30))
 
 class AdvertCategory(db.Model):
     __tablename__ = 'advert_category'
