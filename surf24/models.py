@@ -75,16 +75,12 @@ class Picture(db.Model):
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True, index=True)
-    name = db.Column(db.String(30))
+    en = db.Column(db.String(30))
     parent = db.Column(db.Integer)
     order = db.Column(db.Integer)
-    en = db.Column(db.String(30))
-    de = db.Column(db.String(30))
-    fr = db.Column(db.String(30))
     ru = db.Column(db.String(30))
-    ee = db.Column(db.String(30))
+    et = db.Column(db.String(30))
     es = db.Column(db.String(30))
-    eo = db.Column(db.String(30))
 
 class AdvertCategory(db.Model):
     __tablename__ = 'advert_category'

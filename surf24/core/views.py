@@ -70,10 +70,7 @@ def index():
     Cat2 = aliased(Category, name="Cat2")
     Cat3 = aliased(Category, name="Cat3")
     adverts = db.session.query(Advert, AdvertCategory, Category, Cat2, Cat3).join(AdvertCategory)
-    print(filterForm.category1.data)
-    print("okk")
-    if (filterForm.category1.data==""):
-        print("okk1")
+
     if filterForm.category1.data != None and filterForm.category1.data != "" and filterForm.category1.data > 20 :
         adverts = adverts.filter_by(category1=filterForm.category1.data)
     if filterForm.category2.data != None and filterForm.category2.data != "" and int(filterForm.category2.data) > 20 :

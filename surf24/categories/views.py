@@ -27,15 +27,11 @@ def createCategoryChoices(parent):
     if parent == None: parent = 1000
     choices1 = Category.query.filter_by(parent=parent).all()
     for element in choices1:
-        sequence = (element.id, element.name)
+        sequence = (element.id, element.en)
         if (session['lang'] == 'et'):
-            sequence = (element.id, element.ee)
-        if (session['lang'] == 'de'):
-            sequence = (element.id, element.de)
+            sequence = (element.id, element.et)
         if (session['lang'] == 'es'):
             sequence = (element.id, element.es)
-        if (session['lang'] == 'fr'):
-            sequence = (element.id, element.fr)
         if (session['lang'] == 'ru'):
             sequence = (element.id, element.ru)
 
@@ -65,7 +61,7 @@ def admin_categories():
 @login_required
 def admin_add_category():
     if current_user.role == Roles.ADMIN:
-        category = db.session.query(Category).filter_by(name = None, order = None, parent = None).first()
+        category = db.session.query(Category).filter_by(en = None, order = None, parent = None).first()
         if category:
             return redirect(url_for('categories.admin_edit_category', cat_id=category.id))
         else:
@@ -85,18 +81,26 @@ def admin_edit_category(cat_id):
     if current_user.role == Roles.ADMIN:
         category = Category.query.get(cat_id)
         if form.validate_on_submit():
-            category.name = form.name.data
-            if form.name.data == "":
-                category.name = None
+            category.en = form.en.data
+            if form.en.data == "":
+                category.en = None
             category.parent = form.parent.data
             category.order = form.order.data
+
+            category.et = form.et.data
+            category.ru = form.ru.data
+            category.es = form.es.data
+
             db.session.commit()
             db.session.flush()
             return redirect(url_for('categories.admin_categories'))
         else:
             form.parent.data = category.parent
-            form.name.data = category.name
+            form.en.data = category.en
             form.order.data = category.order
+            form.order.et = category.et
+            form.order.ru = category.ru
+            form.order.es = category.es
             return render_template('admin_edit_category.html', category=category, Roles=Roles, form = form)
     else:
         return redirect(url_for('core.index'))

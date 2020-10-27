@@ -6,8 +6,8 @@
   {% for category in categories %}
     <tr><td>
     {{category.id}}</td><td>
-    {% if category.name != None %}
-      {{category.name}}
+    {% if category.en != None %}
+      {{category.en}}
     {% endif %}
     </td><td>
     {% if category.parent != None %}
@@ -17,10 +17,13 @@
     {% if category.order != None %}
       {{category.order}}
     {% endif %}
-    </td><td>
-    </td><td>
+     </td><td>
     {% if category.et != None %}
       {{category.et}}
+    {% endif %}
+    </td><td>
+    {% if category.ru != None %}
+      {{category.ru}}
     {% endif %}
     </td><td>
     {% if category.es != None %}

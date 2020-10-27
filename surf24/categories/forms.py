@@ -12,7 +12,10 @@ class CategoryForm(FlaskForm):
     brand = StringField('Brand', validators=[Optional()])
 
 class EditCategoryForm(FlaskForm):
-    name = StringField('Category name', validators=[Optional()])
+    en = StringField('Category name', validators=[Optional()])
     parent = IntegerField('Parent ID', validators=[NumberRange(min=0), Optional()])
     order = IntegerField('Order', validators=[NumberRange(min=0), Optional()])
+    et = StringField('Estonian', validators=[Optional()])
+    ru = StringField('Estonian', validators=[Optional()])
+    es = StringField('Estonian', validators=[Optional()])
     submitbutton = SubmitField('Save')

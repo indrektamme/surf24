@@ -3,12 +3,17 @@
   <h3>Edit categories</h3>
   <form class="form_group" method = "POST" enctype="multipart/form-data">
         {{form.hidden_tag()}}
-  <table border='1'><tr><th>ID</th><th>Category name</th><th>Parent ID</th><th>Order</th></tr>
+  <table border='0'><tr><th>ID</th><th>Category name</th><th>Parent ID</th><th>Order</th><th>Estonian</th><th>Russian</th><th>Spanish</th></tr>
     <tr><td>
     {{category.id}}</td><td>
-    {{ form.name }}</td><td>
+    {{ form.en }}</td><td>
     {{ form.parent }}</td><td>
-    {{ form.order }}</td></tr>
+    {{ form.order }}</td><td>
+    {{ form.et }}</td><td>
+    {{ form.ru }}</td><td>
+    {{ form.es }}</td><td>
+
+    </tr>
   </table>
 {{ form.submitbutton }}
 
