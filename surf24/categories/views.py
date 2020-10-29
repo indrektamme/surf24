@@ -98,9 +98,9 @@ def admin_edit_category(cat_id):
             form.parent.data = category.parent
             form.en.data = category.en
             form.order.data = category.order
-            form.order.et = category.et
-            form.order.ru = category.ru
-            form.order.es = category.es
+            form.et.data = category.et
+            form.ru.data = category.ru
+            form.es.data = category.es
             return render_template('admin_edit_category.html', category=category, Roles=Roles, form = form)
     else:
         return redirect(url_for('core.index'))
