@@ -8,6 +8,11 @@
     {{ form.submit() }}
 </form>
 
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+        </div>
+    {% endif %}
 or <a href='{{url_for("google.login")}}' >google</a>
 
 {% endblock %}

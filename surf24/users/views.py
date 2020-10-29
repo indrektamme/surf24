@@ -30,6 +30,7 @@ def register():
 @users.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    error_message = ""
     if form.validate_on_submit():
         # Grab the user from our User Models table
         user = User.query.filter_by(email=form.email.data).first()
@@ -37,7 +38,6 @@ def login():
         # Check that the user was supplied and the password is right
         # The verify_password method comes from the User object
         # https://stackoverflow.com/questions/2209755/python-operation-vs-is-not
-
         if user is not None and user.check_password(form.password.data):
             #Log in the user
 
@@ -55,8 +55,8 @@ def login():
 
             return redirect(next)
         else:
-            print("user on ")
-    return render_template('login.html', form=form, current_user=current_user)
+            error_message = "Wrong password or username"
+    return render_template('login.html', form=form, current_user=current_user, error_message=error_message)
 
 
 
