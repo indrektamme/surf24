@@ -20,6 +20,12 @@ core = Blueprint('core',__name__)
 #@core.route('/gateau', defaults={'lang_code': 'fr'})
 #@core.route('/oj', methods=['GET', 'POST'])
 
+@core.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if current_user.role == Roles.ADMIN:
+        return render_template('admin.html', current_user=current_user)
+    else:
+        return render_template('error_pages/404.html'), 403
 
 
 @core.route('/lang', methods=['GET', 'POST'])
@@ -27,7 +33,6 @@ def lang():
     k = request.referrer[:]
     session['lang'] = request.values.get("cars")
     return redirect(k)
-
 
 @core.route('/index', methods=['GET', 'POST'])
 @core.route('/', methods=['GET', 'POST'])

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Admin users</h3>
+    <pre>
+    Username: {{user.username}}
+    Email: {{user.email}}
+    User role: {{user.role}}
+    Phone: {{user.phone}}
+    Oauth: {{user.oauth}}
+    Reset: <a href=''>Reset password</a>
+    Deactivate: <a href=''>Reset password</a>
+    Delete: <a href=''>Reset password</a>
+
+
+
+        </td>
+    </pre>
+
+{% endblock %}

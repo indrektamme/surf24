@@ -30,12 +30,7 @@
        {% endif %}
 
        {% if current_user.is_authenticated and current_user.role == Roles.ADMIN %}
-
-       <li class="nav-link"><a href="{{ url_for('users.admin_users') }}">{{_('Admin users')}}</a></li>
-       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Admin categories')}}</a></li>
-       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Admin adverts')}}</a></li>
-       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Control panel')}}</a></li>
-
+          <li class="nav-link"><a href="{{ url_for('core.admin') }}">{{_('Control panel')}}</a></li>
        {% endif %}
 
      <form class="form_group" method = "POST" action="{{ url_for('core.lang') }}" enctype="multipart/form-data" onchange="submit()">

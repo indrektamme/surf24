@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+       {% if current_user.is_authenticated and current_user.role == Roles.ADMIN %}
+
+       <li class="nav-link"><a href="{{ url_for('users.admin_users') }}">{{_('Admin users')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Admin categories')}}</a></li>
+       <li class="nav-link"><a href="{{ url_for('categories.admin_categories') }}">{{_('Admin adverts')}}</a></li>
+
+       {% endif %}
+
+{% endblock %}
