@@ -135,3 +135,13 @@ def admin_users():
     else:
         print(current_user.role)
     return redirect(url_for('core.index'))
+
+@users.route("/admin_user")
+@login_required
+def admin_user():
+    if current_user.role == Roles.ADMIN:
+        users = User.query.all()
+        return render_template('admin_user.html', Roles=Roles)
+    else:
+        print(current_user.role)
+    return redirect(url_for('core.index'))
