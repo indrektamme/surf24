@@ -28,11 +28,11 @@ def createCategoryChoices(parent):
     choices1 = Category.query.filter_by(parent=parent).all()
     for element in choices1:
         sequence = (element.id, element.en)
-        if (session['lang'] == 'et'):
+        if (session.get('lang') == 'et'):
             sequence = (element.id, element.et)
-        if (session['lang'] == 'es'):
+        if (session.get('lang') == 'es'):
             sequence = (element.id, element.es)
-        if (session['lang'] == 'ru'):
+        if (session.get('lang') == 'ru'):
             sequence = (element.id, element.ru)
 
         choices.append(sequence)

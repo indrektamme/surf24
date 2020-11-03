@@ -31,7 +31,7 @@ def admin():
 @core.route('/lang', methods=['GET', 'POST'])
 def lang():
     k = request.referrer[:]
-    session['lang'] = request.values.get("cars")
+    session['lang'] = request.values.get("langs")
     return redirect(k)
 
 @core.route('/index', methods=['GET', 'POST'])
@@ -80,7 +80,7 @@ def index():
         adverts = adverts.filter_by(category1=filterForm.category1.data)
     if filterForm.category2.data != None and filterForm.category2.data != "" and int(filterForm.category2.data) > 20 :
         adverts = adverts.filter_by(category2=filterForm.category2.data)
-    if filterForm.category3.data != None and int(filterForm.category3.data) > 20 :
+    if filterForm.category3.data != None and filterForm.category3.data > 20 :
         adverts = adverts.filter_by(category3=filterForm.category3.data)
     if filterForm.size.data != None and filterForm.size.data != "" and filterForm.size.data > 0 :
         adverts = adverts.filter(AdvertCategory.size >= float(filterForm.size.data))

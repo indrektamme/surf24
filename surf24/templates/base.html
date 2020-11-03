@@ -34,7 +34,7 @@
        {% endif %}
 
      <form class="form_group" method = "POST" action="{{ url_for('core.lang') }}" enctype="multipart/form-data" onchange="submit()">
-       <select id="cars" name="cars">
+       <select name="langs">
          <option value="en" {% if session['lang'] == 'en' %}selected{% endif %}>English</option>
          <option value="es" {% if session['lang'] == 'es' %}selected{% endif %}>Espaniol</option>
          <option value="et" {% if session['lang'] == 'et' %}selected{% endif %}>Eesti</option>
