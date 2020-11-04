@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo
-from wtforms import StringField, PasswordField, SubmitField, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, NumberRange, Optional
+from wtforms import StringField, PasswordField, SubmitField, ValidationError, SelectField
 from flask_wtf.file import FileField, FileAllowed
 from surf24.models import User
+from surf24.users.roles import Roles
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -29,9 +30,14 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Sorry, that username is taken!')
 
 class UpdateUserForm(FlaskForm):
+    choices = []
     email = StringField('Email', validators=[DataRequired(),Email()])
     username = StringField('Username', validators=[DataRequired()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    role = SelectField('Role', choices = choices, validators=[NumberRange(min=0), Optional()])
+
+    # company = SelectField("Roll", choices=[(v, escape(v)) for v in Company], coerce=coerce_for_enum(Company)
+
     submit = SubmitField('Update')
 
     def check_email(self, field):

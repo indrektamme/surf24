@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h3>Admin users</h3>
+  <h3>Change User data</h3>
     <pre>
     Username: {{user.username}}
     Email: {{user.email}}
@@ -15,5 +15,26 @@
 
         </td>
     </pre>
+<div class="jumbotron">
+    <div  method="POST" action = "" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    </div>
+    <div class="form-group">
+      {{ form.username.label(class="form-group") }}
+      {{form.username(class='form-control')  }}
+    </div>
+    <div class="form-group">
+      {{ form.email.label(class="form-group") }}
+      {{form.email(class='form-control')  }}
+    </div>
+    <div class="form-group">
+      {{ form.role.label(class="form-group") }}
+      {{form.role(class='form-control')  }}
+    </div>
+     <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+</div>
 
 {% endblock %}

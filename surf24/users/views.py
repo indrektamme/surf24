@@ -136,12 +136,18 @@ def admin_users():
         print(current_user.role)
     return redirect(url_for('core.index'))
 
-@users.route("/admin_user")
+@users.route("/admin_user/<userId>")
 @login_required
-def admin_user():
+def admin_user(userId):
     if current_user.role == Roles.ADMIN:
-        users = User.query.all()
-        return render_template('admin_user.html', Roles=Roles)
+        form = UpdateUserForm()
+        #form.choices=[]
+        sequence = (2, "1")
+        form.choices = Roles.choices()
+        print(form.choices)
+        form.choices.append(sequence)
+        user = User.query.get(userId)
+        return render_template('admin_user.html', user=user, form=form)
     else:
         print(current_user.role)
     return redirect(url_for('core.index'))

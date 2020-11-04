@@ -9,7 +9,7 @@
     {{user.email}}</td><td>
     {{user.role}}</td><td>
     {{user.phone}}</td><td>
-    {{user.oauth}}<a href=''>Edit</a></td>
+    {{user.oauth}}<a href="{{ url_for('users.admin_user', userId=user.id) }}">Edit</a></td>
     </tr>
   {% endfor %}
   </table>
