@@ -13,10 +13,9 @@ jobs:
       - python/save-cache
       - run:
           make install
-          command: 
-              venv/bin/activate
+          command: ./manage.py test
               make lint
-          name: run
+          name: run lint
 
 workflows:
   main:
